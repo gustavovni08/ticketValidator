@@ -10,11 +10,11 @@ interface IPageContainerProps {
 export default function PageContainer({ children }: IPageContainerProps) {
   return (
     <div
-      className="bg-cover bg-center min-h-screen w-full flex flex-col justify-between"
+      className="bg-cover bg-center min-h-screen w-full flex bg-gray-900 flex-col justify-between"
       style={{ backgroundImage: `url(${backgroundImage})` }} 
-    >
+     >
       <Header />
-      <div className="p-4">{children}</div>
+      <div className="p-4 pt-10">{children}</div>
       <Footer/>
     </div>
   )
