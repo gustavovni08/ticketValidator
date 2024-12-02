@@ -17,7 +17,7 @@ export default function FloatingButton({label, icon, path} : IFloatingButtonProp
     return(
         <div 
         onClick={handleNavigate}
-        className="w-full max-w-[50%] bg-white rounded-md shadow-md py-4 px-2 flex justify-between items-center space-x-1 hover:scale-105 hover:brightness-90">
+        className="w-full flex-col max-w-[50%] bg-white rounded-md shadow-md py-4 px-2 flex justify-between items-center space-x-1 hover:scale-105 hover:brightness-90">
             <div>
                 {icon}
             </div>
