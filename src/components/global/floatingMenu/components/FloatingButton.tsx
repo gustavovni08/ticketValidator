@@ -4,9 +4,11 @@ export interface IFloatingButtonProps {
     label: string
     icon: JSX.Element
     path: string
+    onClick: () => void
+    row?: boolean
 }
 
-export default function FloatingButton({label, icon, path} : IFloatingButtonProps){
+export default function FloatingButton({label, icon, path, row, onClick} : IFloatingButtonProps){
     
     const navigate = useNavigate()
 
@@ -16,8 +18,11 @@ export default function FloatingButton({label, icon, path} : IFloatingButtonProp
     
     return(
         <div 
-        onClick={handleNavigate}
-        className="w-full flex-col max-w-[50%] bg-white rounded-md shadow-md py-4 px-2 flex justify-between items-center space-x-1 hover:scale-105 hover:brightness-90">
+        onClick={() => {
+            handleNavigate()
+            onClick()
+        }}
+        className={` ${row ? 'flex-row' : 'flex-col' } p-2 bg-white rounded-lg shadow-md flex justify-between items-center space-x-1 hover:scale-105 hover:brightness-90`}>
             <div>
                 {icon}
             </div>

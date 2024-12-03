@@ -1,0 +1,164 @@
+import { FaArrowLeft } from "react-icons/fa"
+import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
+import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
+import PageContainer from "../../components/global/pageContainer/PageContainer"
+import { useNavigate, useLocation } from "react-router-dom"
+import { FaLocationDot } from "react-icons/fa6";
+import { FaCalendar } from "react-icons/fa";
+import { IoTime } from "react-icons/io5";
+import { FaTicketAlt } from "react-icons/fa";
+import { MdWorkspacePremium } from "react-icons/md";
+import { BsCash } from "react-icons/bs";
+
+export interface IDetailsPageProps {
+    obj_ID: number
+    obj_type: 'ingresso' | 'bilhete' | 'evento' | 'sorteio'
+    title: string
+    description: string
+    image: string
+    date?: string
+    location?: string
+    time?:string
+    price?: string
+}
+
+export default function DetailsPage(){
+
+    const navigate = useNavigate()
+    const location = useLocation();
+    const state = location.state as IDetailsPageProps;
+
+
+    const buttons : IFloatingButtonProps[] = [
+        {
+            icon: <FaArrowLeft/>,
+            label:'',
+            path: '/',
+            onClick: () => {},
+            row: true,
+        },
+    ] 
+
+    const { obj_ID, obj_type, title, description, image, date, location: loc, time, price } = state;
+
+    return( 
+        <PageContainer>
+            <FloatingMenu items={buttons}/>
+                <div className="min-h-[100vh] w-full pb-10 justify-center items-center">
+                    <div className="flex flex-col w-full max-h-[100%] p-4 mt-10 space-y-4 bg-white shadow-md rounded-md">
+                    <div className="w-full tetx-lg font-[600]">
+                        {title}
+                    </div>
+                    <div>
+                        <img src={image} alt={title} className="rounded-md"/>
+                    </div>
+                    <div className="py-4 border-y h-[20vh] overflow-y-hidden overflow-y-scroll">
+                        {description}
+                    </div>
+                    {loc && (
+                        <div className="flex items-center w-full space-x-2">
+                            <div className="font-bold flex items-center space-x-1">
+                                <div>
+                                    <FaLocationDot />
+                                </div>
+                                <div>
+                                    Local:
+                                </div>
+                            </div>
+                            <div className="font-[500]">{loc}</div>
+                        </div>
+                    )}
+                    {date && (
+                        <div className="flex items-center w-full space-x-2">
+                            <div className="font-bold flex items-center space-x-1">
+                                <div>
+                                    <FaCalendar />
+                                </div>
+                                <div>
+                                    Data:
+                                </div>
+                            </div>
+                            <div className="font-[500]">{date}</div>
+                        </div>
+                    )}
+                    {time && (
+                        <div className="flex items-center w-full space-x-2">
+                            <div className="font-bold flex items-center space-x-1">
+                                <div>
+                                    <IoTime />
+                                </div>
+                                <div>
+                                    Hora:
+                                </div>
+                            </div>
+                            <div className="font-[500]">{time}</div>
+                        </div>
+                    )}
+                    {price && (
+                        <div className="flex items-center w-full space-x-2">
+                            <div className="font-bold flex items-center space-x-1">
+                                <div>
+                                <BsCash />
+                                </div>
+                                <div>
+                                    Preço:
+                                </div>
+                            </div>
+                            <div className="font-[500]">{price}</div>
+                        </div>
+                    )}
+
+                    <div className="w-full flex items-center justify-center p-4">
+                        <div className="flex w-4/5 bg-black p-4 rounded-lg p-4 items-center justify-center shadow-md hover:scale-105">
+                                {obj_type === "evento" && (
+                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                        <div>
+                                            <FaTicketAlt/>
+                                        </div>
+                                        <div>
+                                            Comprar Ingresso
+                                        </div>
+                                    </div>
+                                )}
+                                {obj_type === "sorteio" && (
+                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                        <div>
+                                            <FaTicketAlt/>
+                                        </div>
+                                        <div>
+                                            Comprar Bilhete
+                                        </div>
+                                    </div>
+                                )}
+                                 {obj_type === "ingresso" && (
+                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                        <div>
+                                            <FaTicketAlt/>
+                                        </div>
+                                        <div>
+                                            Ver ingresso
+                                        </div>
+                                    </div>
+                                )}
+                                {obj_type === "bilhete" && (
+                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                        <div>
+                                            <MdWorkspacePremium/>
+                                        </div>
+                                        <div>
+                                            Ver Resultado
+                                        </div>
+                                    </div>
+                                )}
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+                </div>
+            </PageContainer>
+    )
+}

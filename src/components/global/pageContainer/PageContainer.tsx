@@ -14,7 +14,7 @@ export default function PageContainer({ children }: IPageContainerProps) {
       style={{ backgroundImage: `url(${backgroundImage})` }} 
      >
       <Header />
-      <div className="p-4 pt-10">{children}</div>
+      <div className="p-4 pt-10 flex items-center flex-col">{children}</div>
       <Footer/>
     </div>
   )
