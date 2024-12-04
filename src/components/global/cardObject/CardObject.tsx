@@ -1,5 +1,7 @@
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendar } from "react-icons/fa";
+import { BsCash } from "react-icons/bs";
+import { IoTime } from "react-icons/io5";
 import { IDetailsPageProps } from "../../../pages/DetailsPage/DetailsPage";
 import { useNavigate } from "react-router-dom";
 
@@ -49,37 +51,56 @@ export default function CardObject({
     }
 
     return (
-        <div 
-        onClick={handleNavigateDetails}
-        className="w-4/5 md:w-[60%] lg:w-[40%] h-full cursor-pointer shadow-xl rounded-lg flex flex-col items-center hover:scale-105 hover:brightness-90">
-            <div className="w-full">
-                <img
-                    src={image}
-                    alt={title}
-                    className="rounded-t w-full max-h-[200px] object-cover"
-                />
-            </div>
-            <div  className="w-full h-full rounded-b bg-white flex flex-col justify-center p-2">
-                <div className="w-full text-md font-[600] truncate">{title}</div>
-                <div className="w-full flex justify-between flex-col  text-sm">
-                    {location && (
-                        <div className="flex items-center space-x-1">
-                            <div>
-                                <FaLocationDot />
-                            </div>
-                            <div className="w-full">{location}</div>
-                        </div>
-                    )}
-                    {date && (
-                        <div className="flex items-center space-x-1">
-                            <div>
-                                <FaCalendar />
-                            </div>
-                            <div className="w-1/2">{date}</div>
-                        </div>
-                    )}
-                </div>
-            </div>
+    <div 
+    onClick={handleNavigateDetails}
+    className="w-full max-w-[400px] min-w-[300px] bg-white shadow-md flex flex-col hover:scale-105 hover:brightness-90 rounded-md transition-transform duration-200 ease-in-out">
+        <div className="w-full h-[200px] overflow-hidden">
+            <img src={image} alt={title} className="w-full  h-full object-cover rounded-t"/>
         </div>
-    );
+        <div className="flex flex-col p-2">
+            <div className="w-full font-semibold truncate">{title}</div>
+            {location && (
+                <div className="w-full text-gray-600 flex items-center space-x-1 text-sm truncate">
+                    <div>
+                        <FaLocationDot />
+                    </div>
+                    <div>
+                        {location}
+                    </div>
+                </div>
+            )}
+            {date && (
+                <div className="w-full text-gray-600 flex items-center space-x-1 text-sm truncate">
+                    <div>
+                        <FaCalendar />
+                    </div>
+                    <div>
+                        {date}
+                    </div>
+                </div>
+            )}
+            {time && (
+                <div className="w-full text-gray-600 flex items-center space-x-1 text-sm truncate">
+                    <div>
+                        <IoTime/>
+                    </div>
+                    <div>
+                        {time}
+                    </div>
+                </div>
+            )}
+            {price && (
+                <div className="w-full text-gray-600 flex items-center space-x-2 text-sm truncate">
+                    <div>
+                        <BsCash/>
+                    </div>
+                    <div>
+                        {price}
+                    </div>
+                </div>
+            )}
+        </div>
+
+    </div>
+    )
 }

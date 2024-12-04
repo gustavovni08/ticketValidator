@@ -2,13 +2,15 @@ import { FaArrowLeft } from "react-icons/fa"
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
 import PageContainer from "../../components/global/pageContainer/PageContainer"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendar } from "react-icons/fa";
 import { IoTime } from "react-icons/io5";
 import { FaTicketAlt } from "react-icons/fa";
 import { MdWorkspacePremium } from "react-icons/md";
 import { BsCash } from "react-icons/bs";
+import { useContext } from "react"
+import { SignUpContext } from "../../contexts/SignInContext"
 
 export interface IDetailsPageProps {
     obj_ID: number
@@ -24,10 +26,26 @@ export interface IDetailsPageProps {
 
 export default function DetailsPage(){
 
-    const navigate = useNavigate()
-    const location = useLocation();
+    const location = useLocation()
     const state = location.state as IDetailsPageProps;
+    const { obj_ID, obj_type, title, description, image, date, location: loc, time, price } = state;
+    const {user} = useContext(SignUpContext)
+    const navigate = useNavigate()
 
+    function typeFunctionController(){
+        if(obj_type === 'evento'){
+            if(!user){
+                navigate('/signIn')
+                return
+            }
+        }
+        if(obj_type === 'sorteio'){
+            if(!user){
+                navigate('/signIn')
+                return
+            }
+        }
+    }
 
     const buttons : IFloatingButtonProps[] = [
         {
@@ -39,20 +57,19 @@ export default function DetailsPage(){
         },
     ] 
 
-    const { obj_ID, obj_type, title, description, image, date, location: loc, time, price } = state;
 
     return( 
         <PageContainer>
             <FloatingMenu items={buttons}/>
-                <div className="min-h-[100vh] w-full pb-10 justify-center items-center">
-                    <div className="flex flex-col w-full max-h-[100%] p-4 mt-10 space-y-4 bg-white shadow-md rounded-md">
+                <div className="min-h-[100vh] w-full pb-[30%] justify-center items-center">
+                    <div className="flex flex-col w-full max-h-[100%] p-4 mt-10 space-y-4 bg-white border shadow-lg rounded-md">
                     <div className="w-full tetx-lg font-[600]">
                         {title}
                     </div>
                     <div>
                         <img src={image} alt={title} className="rounded-md"/>
                     </div>
-                    <div className="py-4 border-y h-[20vh] overflow-y-hidden overflow-y-scroll">
+                    <div className="py-4 border-y h-[20vh] overflow-y-scroll">
                         {description}
                     </div>
                     {loc && (
@@ -109,7 +126,9 @@ export default function DetailsPage(){
                     )}
 
                     <div className="w-full flex items-center justify-center p-4">
-                        <div className="flex w-4/5 bg-black p-4 rounded-lg p-4 items-center justify-center shadow-md hover:scale-105">
+                        <div 
+                        onClick={typeFunctionController}
+                        className="flex w-4/5 bg-black p-4 rounded-lg items-center justify-center shadow-md hover:scale-105 hover:brightness-90">
                                 {obj_type === "evento" && (
                                     <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                         <div>

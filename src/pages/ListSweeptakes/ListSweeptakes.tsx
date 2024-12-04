@@ -8,16 +8,21 @@ import image3 from "../../assets/CERVEJA.webp"
 import { MdWorkspacePremium } from "react-icons/md";
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
 import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext"
+import { SignUpContext } from "../../contexts/SignInContext"
+import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function ListSweeptakes(){
     
+    const {user} = useContext(SignUpContext)
+    const navigate = useNavigate()
     const {setActiveButton} = useActiveButton()
     
     const sweeptakes : ICardObjectProps[] = [
         {
             title:'SORTEIO CAMISA OFICIAL CSA', 
             image: image1,
-            date:'12/12',
+            date:'Domingo, 12 de Dezembro',
             description: `Chegou a sua chance de vestir as cores do Azulão com estilo! Participe do nosso sorteio exclusivo e leve para casa uma camisa oficial do CSA. Mostre sua paixão pelo maior de Alagoas! 
             Regras para Participar:
             Compre seu bilhete na plataforma oficial: Cada bilhete adquirido dá direito a 1 número da sorte para o sorteio. Quanto mais bilhetes, maiores as suas chances!
@@ -28,12 +33,14 @@ export default function ListSweeptakes(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com transmissão ao vivo nas redes sociais oficiais do CSA.
             Garanta seu bilhete agora e não perca essa oportunidade! Venha torcer com a camisa que representa sua paixão pelo Azulão! Boa sorte!`,
-            obj_type: 'sorteio'
+            obj_type: 'sorteio',
+            time: '18h:00rs',
+            price:'R$10,99'
         },
         {
             title:'SORTEIO CAMISA OFICIAL CRB', 
             image: image2,
-            date:'12/12',
+            date:'Domingo, 12 de Dezembro',
             description: `Chegou a sua vez de mostrar todo o seu amor pelo Galo! Participe do nosso sorteio exclusivo e tenha a chance de ganhar uma camisa oficial do CRB. Vista com orgulho as cores do maior de Alagoas!
             Regras para Participar:
             Compre seu bilhete na plataforma oficial: Cada bilhete adquirido dá direito a 1 número da sorte. Quanto mais bilhetes você comprar, maiores serão suas chances de ganhar!
@@ -44,12 +51,14 @@ export default function ListSweeptakes(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com transmissão ao vivo nas redes sociais oficiais do CRB.
             Garanta seu bilhete agora e participe! Não perca a chance de levar pra casa a camisa oficial que é símbolo da sua paixão pelo Galo! Boa sorte!`,
-            obj_type: 'sorteio'
+            obj_type: 'sorteio',
+            time: '18h:00rs',
+            price:'R$10,99'
         },
         {
             title:'SORTEIO ENGRADADO SKOL LONG NECK', 
             image: image3,
-            date:'11/12',
+            date:'Domingo, 12 de Dezembro',
             description: `A festa já está garantida! Participe do nosso sorteio e tenha a chance de levar para casa um engradado de Skol Long Neck. Refresque seus momentos com a cerveja que desce redondo e é a cara da diversão!
             Regras para Participar:
             Compre seu bilhete na plataforma oficial: Cada bilhete adquirido dá direito a 1 número da sorte para o sorteio. Quanto mais bilhetes, maiores as chances de ganhar!
@@ -60,7 +69,9 @@ export default function ListSweeptakes(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com anúncio ao vivo nas nossas redes sociais.
             Garanta seu bilhete agora e prepare-se para comemorar! Não perca essa chance de ganhar um engradado de Skol Long Neck para brindar com os amigos. Boa sorte!`,
-            obj_type: 'sorteio'
+            obj_type: 'sorteio',
+            time: '18h:00rs',
+            price:'R$10,99'
         },
 
     ]
@@ -70,7 +81,15 @@ export default function ListSweeptakes(){
             icon: <MdWorkspacePremium/> ,
             label:'Meus Bilhetes',
             path: '/Raffles',
-            onClick: () => {setActiveButton('Sorteios')}
+            onClick: () => {
+                if(!user){
+                    navigate('/SignIn')
+                    return
+                }
+ 
+                navigate('/Raffles')
+                setActiveButton('Sorteios')
+            }
         },
     ]
     

@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import CardObject, { ICardObjectProps } from "../cardObject/CardObject";
-import { IDetailsPageProps } from "../../../pages/DetailsPage/DetailsPage";
 
 interface IDynamicListProps {
     label: string;
@@ -16,25 +14,21 @@ export default function DynamicList({
     secondaryList 
 }: IDynamicListProps) {
 
-    const navigate = useNavigate()
 
     return (
         <div className="w-full pt-10 min-h-[100vh] pb-20 flex flex-col items-center">
             
-            <div className="w-[90%] md:w-[60%] lg:w-[40%] m-2 my-4 font-semibold text-lg">
+            <div className="w-[90%] m-2 my-4 font-semibold text-lg">
                 {label}
             </div>
 
             {list && (
                 <div 
-                    className={`w-full ${secondaryList ? 'flex-row overflow-x-scroll' : 'flex-col space-y-4 justify-center items-center pl-10 pb-20'} flex`}
+                    className={`w-full ${secondaryList ? 'flex-row overflow-x-scroll scrollbar-thin space-x-4 scrollbar-track-transparent overflow-hidden' : 'flex-col justify-center items-center pb-20'}  p-4 flex`}
                 >
                     {list.map((item, index) => (
-                        <div 
-                            key={index} 
-                            className={`flex-shrink-0 ${ secondaryList ? 'w-[90%]' : 'w-full'}`}
-                        >
                             <CardObject
+                                key={index}
                                 image={item.image}
                                 title={item.title}
                                 location={item.location}
@@ -44,28 +38,25 @@ export default function DynamicList({
                                 time={item.time}
                                 price={item.price}
                             />
-                        </div>
+                        
                     ))}
                 </div>
             )}
 
             
             {secondaryLabel && (
-                <div className="w-[90%] md:w-[60%] lg:w-[40%] m-2 my-4 font-semibold text-lg">
+                <div className="w-[90%] m-2 my-4 font-semibold text-lg">
                     {secondaryLabel}
                 </div>
             )}
 
             {secondaryList && (
                 <div 
-                    className={`w-full flex-row overflow-x-scroll flex space-x-2 items-center`}
+                    className={`w-full flex-row overflow-x-scroll scrollbar-thin scrollbar-track-transparent overflow-hidden flex space-x-4 items-center p-4`}
                 >
                     {secondaryList.map((item, index) => (
-                        <div 
-                            key={index} 
-                            className="flex-shrink-0 w-[90%]"
-                        >
                             <CardObject
+                                key={index}
                                 image={item.image}
                                 title={item.title}
                                 location={item.location}
@@ -75,7 +66,6 @@ export default function DynamicList({
                                 time={item.time}
                                 price={item.price}
                             />
-                        </div>
                     ))}
                 </div>
             )}

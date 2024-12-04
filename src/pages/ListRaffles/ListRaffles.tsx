@@ -15,7 +15,7 @@ export default function ListRaffles(){
         {
             title:'SORTEIO CAMISA OFICIAL CSA', 
             image: image1,
-            date:'12/12',
+            date:'Domingo, 12 de Dezembro',
             description: `Chegou a sua chance de vestir as cores do Azulão com estilo! Participe do nosso sorteio exclusivo e leve para casa uma camisa oficial do CSA. Mostre sua paixão pelo maior de Alagoas! 
             Regras para Participar:
             Compre seu bilhete na plataforma oficial: Cada bilhete adquirido dá direito a 1 número da sorte para o sorteio. Quanto mais bilhetes, maiores as suas chances!
@@ -26,9 +26,10 @@ export default function ListRaffles(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com transmissão ao vivo nas redes sociais oficiais do CSA.
             Garanta seu bilhete agora e não perca essa oportunidade! Venha torcer com a camisa que representa sua paixão pelo Azulão! Boa sorte!`,
-            obj_type: 'sorteio'
+            obj_type: 'bilhete',
+            time: '18h:00rs',
+            price:'R$10,99'
         },
-
     ]
 
     const buttons : IFloatingButtonProps[] = [
