@@ -39,6 +39,7 @@ export default function DynamicList({
                                 time={item.time}
                                 price={item.price}
                                 qrcode={item.qrcode}
+                                result={item.result}
                             />
                         
                     ))}
@@ -69,6 +70,7 @@ export default function DynamicList({
                                 time={item.time}
                                 price={item.price}
                                 qrcode={item.qrcode}
+                                result={item.result}
                             />
                     ))}
                 </div>

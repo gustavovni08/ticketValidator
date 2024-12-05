@@ -32,7 +32,7 @@ export default function DetailsPage(){
 
     const location = useLocation()
     const state = location.state as ICardObjectProps;
-    const { id, type, title, description, image, date, location: loc, time, price, qrcode } = state;
+    const { id, type, title, description, image, date, location: loc, time, price, qrcode, result } = state;
     const [showTicketModal, setShowTicketModal] = useState<boolean>(false)
     const [showRaffleModal, setShowRaffleModal] = useState<boolean>(false)
     const {user} = useContext(SignUpContext)
@@ -54,7 +54,7 @@ export default function DetailsPage(){
         if( type === 'ingresso'){
             setShowTicketModal(true)
         }
-        if( type === 'bilhete'){
+        if( type === 'bilhete' && result){
             setShowRaffleModal(true)
         }
     }
@@ -84,6 +84,9 @@ export default function DetailsPage(){
             <RaffleModal
             isOpen={showRaffleModal}
             closeModal={() => {setShowRaffleModal(false)}}
+            id={id}
+            result={result!}
+            description={description}
             />
             <PageContainer>
 
@@ -99,6 +102,32 @@ export default function DetailsPage(){
                     <div className="py-4 border-y h-[20vh] overflow-y-scroll">
                         {description}
                     </div>
+                    {type === 'bilhete' && (
+                        <div className="flex items-center w-full space-x-2">
+                            <div className="font-bold flex items-center space-x-1">
+                                <div>
+                                    <FaTicketAlt />
+                                </div>
+                                <div>
+                                    Número do Bilhete:
+                                </div>
+                            </div>
+                            <div className="font-[500]">#{id}</div>
+                        </div>
+                    )}
+                    {type === 'ingresso' && (
+                        <div className="flex items-center w-full space-x-2">
+                            <div className="font-bold flex items-center space-x-1">
+                                <div>
+                                    <FaTicketAlt />
+                                </div>
+                                <div>
+                                    Número do Ingresso:
+                                </div>
+                            </div>
+                            <div className="font-[500]">#{id}</div>
+                        </div>
+                    )}
                     {loc && (
                         <div className="flex items-center w-full space-x-2">
                             <div className="font-bold flex items-center space-x-1">
@@ -153,50 +182,58 @@ export default function DetailsPage(){
                     )}
 
                     <div className="w-full flex items-center justify-center p-4">
-                        <div 
-                        onClick={typeFunctionController}
-                        className="flex w-4/5 bg-black p-4 rounded-lg items-center justify-center shadow-md hover:scale-105 hover:brightness-90">
-                                {type === "evento" && (
-                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
-                                        <div>
-                                            <FaTicketAlt/>
+                        {type !== 'bilhete' && (
+                            <div 
+                            onClick={typeFunctionController}
+                            className="flex w-4/5 bg-black p-4 rounded-lg items-center justify-center shadow-md hover:scale-105 hover:brightness-90">
+                                    {type === "evento" && (
+                                        <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                            <div>
+                                                <FaTicketAlt/>
+                                            </div>
+                                            <div>
+                                                Comprar Ingresso
+                                            </div>
                                         </div>
-                                        <div>
-                                            Comprar Ingresso
+                                    )}
+                                    {type === "sorteio" && (
+                                        <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                            <div>
+                                                <FaTicketAlt/>
+                                            </div>
+                                            <div>
+                                                Comprar Bilhete
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                                {type === "sorteio" && (
-                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
-                                        <div>
-                                            <FaTicketAlt/>
+                                    )}
+                                     {type === "ingresso" && (
+                                        <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                            <div>
+                                                <FaTicketAlt/>
+                                            </div>
+                                            <div>
+                                                Ver ingresso
+                                            </div>
                                         </div>
-                                        <div>
-                                            Comprar Bilhete
-                                        </div>
-                                    </div>
-                                )}
-                                 {type === "ingresso" && (
-                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
-                                        <div>
-                                            <FaTicketAlt/>
-                                        </div>
-                                        <div>
-                                            Ver ingresso
-                                        </div>
-                                    </div>
-                                )}
-                                {type === "bilhete" && (
-                                    <div className="text-white text-lg font-[600] flex items-center space-x-4">
-                                        <div>
-                                            <MdWorkspacePremium/>
-                                        </div>
-                                        <div>
-                                            Ver Resultado
-                                        </div>
-                                    </div>
-                                )}
-                        </div>
+                                    )}
+                            </div>
+                        )}
+
+                        {type === "bilhete" && (
+                             <div 
+                             onClick={typeFunctionController}
+                             className={`flex w-4/5 ${result ? 'bg-black hover:scale-105 hover:brightness-90' : 'bg-gray-400'} p-4 rounded-lg items-center justify-center shadow-md`}>
+                            <div className="text-white text-lg font-[600] flex items-center space-x-4">
+                                <div>
+                                    <MdWorkspacePremium/>
+                                </div>
+                                <div>
+                                    Ver Resultado
+                                </div>
+                            </div>
+                            </div>
+                        )}
+
                     </div>
 
 
