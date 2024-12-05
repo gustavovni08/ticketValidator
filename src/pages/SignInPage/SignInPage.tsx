@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext";
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu";
 import { IUser, SignUpContext } from "../../contexts/SignInContext";
+import {motion} from "framer-motion"
 
 
 export default function SignInPage(){
@@ -49,8 +50,13 @@ export default function SignInPage(){
     }
 
     return(
-        <>
-            <div className="flex flex-col bg-gray-200 w-full min-h-[100vh] items-center">
+        <div className="bg-gray-200">
+            <motion.div 
+            initial={{ opacity: 0, y: 100}}
+            animate={{ opacity: 1, y: 0}}
+            exit={{ opacity: 0, x: 100}}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col bg-gray-200 w-full min-h-[100vh] items-center">
 
             <div className="w-4/5 flex items-center justify-center m-2">
                 <FloatingMenu items={buttons}/>
@@ -88,8 +94,8 @@ export default function SignInPage(){
             </div>
 
 
-            </div>
-        </>
+            </motion.div>
+        </div>
         
     )
 }

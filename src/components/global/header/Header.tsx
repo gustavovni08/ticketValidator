@@ -3,10 +3,12 @@ import { useContext } from "react"
 import { SignUpContext } from "../../../contexts/SignInContext"
 import { IoLogOut } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useActiveButton } from "../footer/context/ActiveButtonContext";
 
 export default function Header(){
     
     const navigate = useNavigate()
+    const {setActiveButton} = useActiveButton()
     const {user, setUser} = useContext(SignUpContext)
 
     return(
@@ -29,7 +31,11 @@ export default function Header(){
                         </div>
                     </div>
                     <div 
-                    onClick={() => {setUser(null)}}
+                    onClick={() => {
+                        setUser(null)
+                        navigate('/')
+                        setActiveButton('Home')
+                    }}
                     className="hover:scale-110">
                         <IoLogOut/>
                     </div>

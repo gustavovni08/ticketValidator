@@ -1,14 +1,15 @@
 import React, { useRef, useEffect } from "react"
 import { ReactNode } from "react"
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface IModalContainerProps{
     isOpen: boolean
     closeModal: () => void
-    children: ReactNode
+    children?: ReactNode
 }
 
 
-export default function modalContainer({isOpen, closeModal, children} : IModalContainerProps){
+export default function ModalContainer({isOpen, closeModal, children} : IModalContainerProps){
 
     const modalRef = useRef<HTMLDivElement>(null)
     
@@ -33,17 +34,27 @@ export default function modalContainer({isOpen, closeModal, children} : IModalCo
       }, [])
     
     return(
-        <>
-            {isOpen && (
-                <div 
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              className="fixed inset-0 z-40 bg-black bg-opacity-20 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
                 ref={modalRef}
-                className="z-20 inset-0 bg-black opacity-20 flex items-center justify-center">
-                    <div className="bg-white rounded-lg shadow-md">
-                        {children}
-                    </div>
-                </div>
-            )}
-        </>
-        
-    )
+                className="bg-white w-4/5 rounded-lg max-h-[90%] overflow-y-scroll shadow-md"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {children}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )
 }

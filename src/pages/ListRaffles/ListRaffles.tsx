@@ -13,6 +13,7 @@ export default function ListRaffles(){
 
     const events : ICardObjectProps[] = [
         {
+            id:'1',
             title:'SORTEIO CAMISA OFICIAL CSA', 
             image: image1,
             date:'Domingo, 12 de Dezembro',
@@ -26,7 +27,7 @@ export default function ListRaffles(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com transmissão ao vivo nas redes sociais oficiais do CSA.
             Garanta seu bilhete agora e não perca essa oportunidade! Venha torcer com a camisa que representa sua paixão pelo Azulão! Boa sorte!`,
-            obj_type: 'bilhete',
+            type: 'bilhete',
             time: '18h:00rs',
             price:'R$10,99'
         },

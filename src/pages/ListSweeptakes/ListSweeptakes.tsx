@@ -20,6 +20,7 @@ export default function ListSweeptakes(){
     
     const sweeptakes : ICardObjectProps[] = [
         {
+            id:'1',
             title:'SORTEIO CAMISA OFICIAL CSA', 
             image: image1,
             date:'Domingo, 12 de Dezembro',
@@ -33,11 +34,12 @@ export default function ListSweeptakes(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com transmissão ao vivo nas redes sociais oficiais do CSA.
             Garanta seu bilhete agora e não perca essa oportunidade! Venha torcer com a camisa que representa sua paixão pelo Azulão! Boa sorte!`,
-            obj_type: 'sorteio',
+            type: 'sorteio',
             time: '18h:00rs',
             price:'R$10,99'
         },
         {
+            id:'2',
             title:'SORTEIO CAMISA OFICIAL CRB', 
             image: image2,
             date:'Domingo, 12 de Dezembro',
@@ -51,11 +53,12 @@ export default function ListSweeptakes(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com transmissão ao vivo nas redes sociais oficiais do CRB.
             Garanta seu bilhete agora e participe! Não perca a chance de levar pra casa a camisa oficial que é símbolo da sua paixão pelo Galo! Boa sorte!`,
-            obj_type: 'sorteio',
+            type: 'sorteio',
             time: '18h:00rs',
             price:'R$10,99'
         },
         {
+            id:'3',
             title:'SORTEIO ENGRADADO SKOL LONG NECK', 
             image: image3,
             date:'Domingo, 12 de Dezembro',
@@ -69,7 +72,7 @@ export default function ListSweeptakes(){
             Último dia para participar: 11/12/2024.
             Data do sorteio: 12/12/2024, com anúncio ao vivo nas nossas redes sociais.
             Garanta seu bilhete agora e prepare-se para comemorar! Não perca essa chance de ganhar um engradado de Skol Long Neck para brindar com os amigos. Boa sorte!`,
-            obj_type: 'sorteio',
+            type: 'sorteio',
             time: '18h:00rs',
             price:'R$10,99'
         },

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { IUser, SignUpContext } from "../../contexts/SignInContext"
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
 import { FaArrowLeft } from "react-icons/fa6"
+import { motion } from "framer-motion"
 
 export default  function GuardianSignUpPage(){
     
@@ -26,7 +27,7 @@ export default  function GuardianSignUpPage(){
     const [emptyFields, setEmptyFields] = useState<string[]>([])
     const [step, setStep] = useState<number>(1)
 
-    const {user, setUser} = useContext(SignUpContext)
+    const {setUser} = useContext(SignUpContext)
 
     const navigate = useNavigate()
 
@@ -214,7 +215,6 @@ export default  function GuardianSignUpPage(){
         {
             icon: <FaArrowLeft/>,
             label:'',
-            path: '/',
             onClick: () => {
                 if(step === 2){
                     setStep(1)
@@ -230,7 +230,12 @@ export default  function GuardianSignUpPage(){
 
     return(
         <>
-            <div className="w-full min-h-[100vh] flex flex-col items-center space-y-6 pt-10 pb-10">
+            <motion.div 
+            initial={{ opacity: 0, y: 100}}
+            animate={{ opacity: 1, y: 0}}
+            exit={{ opacity: 0, x: 100}}
+            transition={{ duration: 0.5 }}
+            className="w-full min-h-[100vh] flex flex-col items-center space-y-6 pt-10 pb-10">
 
             <div className="w-4/5 flex items-center">
 
@@ -306,7 +311,7 @@ export default  function GuardianSignUpPage(){
                         
                         <Button 
                         value="Próximo"
-                        disabled={!name || !CPF || !birthDate}
+                        disabled={!name || !password || !CPF || !birthDate}
                         onClick={() => {
 
                             const validacaoCPF = validarCPF(CPF)
@@ -400,7 +405,7 @@ export default  function GuardianSignUpPage(){
                     </>
                 )}
 
-            </div>
+            </motion.div>
         </>
     )
 }

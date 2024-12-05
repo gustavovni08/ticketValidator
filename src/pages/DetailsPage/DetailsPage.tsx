@@ -9,12 +9,15 @@ import { IoTime } from "react-icons/io5";
 import { FaTicketAlt } from "react-icons/fa";
 import { MdWorkspacePremium } from "react-icons/md";
 import { BsCash } from "react-icons/bs";
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { SignUpContext } from "../../contexts/SignInContext"
+import TicketModal from "../../components/modal/ticketModal/TicketModal"
+import { ICardObjectProps } from "../../components/global/cardObject/CardObject"
+import RaffleModal from "../../components/modal/raffleModal/RaffleModal"
 
 export interface IDetailsPageProps {
-    obj_ID: number
-    obj_type: 'ingresso' | 'bilhete' | 'evento' | 'sorteio'
+    id: number
+    type: 'ingresso' | 'bilhete' | 'evento' | 'sorteio'
     title: string
     description: string
     image: string
@@ -22,28 +25,37 @@ export interface IDetailsPageProps {
     location?: string
     time?:string
     price?: string
+    qrcode?:string
 }
 
 export default function DetailsPage(){
 
     const location = useLocation()
-    const state = location.state as IDetailsPageProps;
-    const { obj_ID, obj_type, title, description, image, date, location: loc, time, price } = state;
+    const state = location.state as ICardObjectProps;
+    const { id, type, title, description, image, date, location: loc, time, price, qrcode } = state;
+    const [showTicketModal, setShowTicketModal] = useState<boolean>(false)
+    const [showRaffleModal, setShowRaffleModal] = useState<boolean>(false)
     const {user} = useContext(SignUpContext)
     const navigate = useNavigate()
 
     function typeFunctionController(){
-        if(obj_type === 'evento'){
+        if(type === 'evento'){
             if(!user){
                 navigate('/signIn')
                 return
             }
         }
-        if(obj_type === 'sorteio'){
+        if(type === 'sorteio'){
             if(!user){
                 navigate('/signIn')
                 return
             }
+        }
+        if( type === 'ingresso'){
+            setShowTicketModal(true)
+        }
+        if( type === 'bilhete'){
+            setShowRaffleModal(true)
         }
     }
 
@@ -57,9 +69,24 @@ export default function DetailsPage(){
         },
     ] 
 
-
     return( 
-        <PageContainer>
+        <>
+            <TicketModal 
+            isOpen={showTicketModal} 
+            closeModal={() => {setShowTicketModal(false)}}
+            id={id}
+            ticketName={title}
+            qrcode={qrcode || ''}
+            location={loc || ''}
+            date={date || ''}
+            time={time || ''}
+            />
+            <RaffleModal
+            isOpen={showRaffleModal}
+            closeModal={() => {setShowRaffleModal(false)}}
+            />
+            <PageContainer>
+
             <FloatingMenu items={buttons}/>
                 <div className="min-h-[100vh] w-full pb-[30%] justify-center items-center">
                     <div className="flex flex-col w-full max-h-[100%] p-4 mt-10 space-y-4 bg-white border shadow-lg rounded-md">
@@ -129,7 +156,7 @@ export default function DetailsPage(){
                         <div 
                         onClick={typeFunctionController}
                         className="flex w-4/5 bg-black p-4 rounded-lg items-center justify-center shadow-md hover:scale-105 hover:brightness-90">
-                                {obj_type === "evento" && (
+                                {type === "evento" && (
                                     <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                         <div>
                                             <FaTicketAlt/>
@@ -139,7 +166,7 @@ export default function DetailsPage(){
                                         </div>
                                     </div>
                                 )}
-                                {obj_type === "sorteio" && (
+                                {type === "sorteio" && (
                                     <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                         <div>
                                             <FaTicketAlt/>
@@ -149,7 +176,7 @@ export default function DetailsPage(){
                                         </div>
                                     </div>
                                 )}
-                                 {obj_type === "ingresso" && (
+                                 {type === "ingresso" && (
                                     <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                         <div>
                                             <FaTicketAlt/>
@@ -159,7 +186,7 @@ export default function DetailsPage(){
                                         </div>
                                     </div>
                                 )}
-                                {obj_type === "bilhete" && (
+                                {type === "bilhete" && (
                                     <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                         <div>
                                             <MdWorkspacePremium/>
@@ -179,5 +206,6 @@ export default function DetailsPage(){
 
                 </div>
             </PageContainer>
+        </>
     )
 }

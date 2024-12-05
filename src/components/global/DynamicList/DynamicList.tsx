@@ -24,19 +24,21 @@ export default function DynamicList({
 
             {list && (
                 <div 
-                    className={`w-full ${secondaryList ? 'flex-row overflow-x-scroll scrollbar-thin space-x-4 scrollbar-track-transparent overflow-hidden' : 'flex-col justify-center items-center pb-20'}  p-4 flex`}
+                    className={`w-full ${secondaryList ? 'flex-row overflow-x-scroll scrollbar-thin space-x-4 scrollbar-track-transparent overflow-hidden' : 'flex-col justify-center items-center pb-20 space-y-4'}  p-4 flex`}
                 >
                     {list.map((item, index) => (
                             <CardObject
                                 key={index}
+                                id={item.id}
                                 image={item.image}
                                 title={item.title}
                                 location={item.location}
                                 date={item.date}
                                 description={item.description}
-                                obj_type={item.obj_type}
+                                type={item.type}
                                 time={item.time}
                                 price={item.price}
+                                qrcode={item.qrcode}
                             />
                         
                     ))}
@@ -57,14 +59,16 @@ export default function DynamicList({
                     {secondaryList.map((item, index) => (
                             <CardObject
                                 key={index}
+                                id={item.id}
                                 image={item.image}
                                 title={item.title}
                                 location={item.location}
                                 date={item.date}
                                 description={item.description}
-                                obj_type={item.obj_type}
+                                type={item.type}
                                 time={item.time}
                                 price={item.price}
+                                qrcode={item.qrcode}
                             />
                     ))}
                 </div>

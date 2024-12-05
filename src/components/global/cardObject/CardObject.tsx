@@ -5,8 +5,10 @@ import { IoTime } from "react-icons/io5";
 import { IDetailsPageProps } from "../../../pages/DetailsPage/DetailsPage";
 import { useNavigate } from "react-router-dom";
 
+
 export interface ICardObjectProps {
-    obj_type: 'evento' | 'sorteio' | 'bilhete' | 'ingresso'
+    id: string
+    type: 'evento' | 'sorteio' | 'bilhete' | 'ingresso'
     description: string
     image: string
     title: string
@@ -14,35 +16,43 @@ export interface ICardObjectProps {
     date?: string
     time?: string
     price?: string
+    qrcode?: string
+    result?: string
+
 }
 
 
 
 export default function CardObject({
+    id,
     image,
     title,
-    obj_type,
+    type,
     description,
     location,
     date,
     time,
-    price
+    price,
+    qrcode,
+    result
 }: ICardObjectProps) {
 
     const navigate = useNavigate()
 
     function handleNavigateDetails(){
 
-        const detailObject : IDetailsPageProps = {
-            obj_ID: 1,
-            obj_type: obj_type,
+        const detailObject : ICardObjectProps = {
+            id: id,
+            type: type,
             description: description,
             image: image,
             title: title,
             location: location,
             date: date,
             time: time,
-            price: price
+            price: price,
+            qrcode: qrcode,
+            result: result,
         }
     
         navigate('/Details', {state: detailObject})

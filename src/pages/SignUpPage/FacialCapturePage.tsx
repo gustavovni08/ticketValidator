@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
 import { FaArrowLeft } from "react-icons/fa6"
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
+import { motion } from "framer-motion"
 
 export default function FacialCapturePage() {
     const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -81,7 +82,12 @@ export default function FacialCapturePage() {
 
     return (
         <>
-            <div className="w-full min-h-[100vh] flex flex-col items-center space-y-6 pt-10 pb-10">
+            <motion.div 
+            initial={{ opacity: 0, y: 100}}
+            animate={{ opacity: 1, y: 0}}
+            exit={{ opacity: 0, x: 100}}
+            transition={{ duration: 0.5 }}
+            className="w-full min-h-[100vh] flex flex-col items-center space-y-6 pt-10 pb-10">
                 
             <div className="w-4/5 flex items-center">
                 <FloatingMenu items={buttons}/>
@@ -113,7 +119,7 @@ export default function FacialCapturePage() {
                         <Button value="Tirar outra Foto" onClick={() => setCapturedImage(null)} />
                     </>
                 )}
-            </div>
+            </motion.div>
         </>
     )
 }

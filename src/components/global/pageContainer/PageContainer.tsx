@@ -2,20 +2,41 @@ import React from "react";
 import Header from "../header/Header";
 import backgroundImage from "../../../assets/bg.jpg"; 
 import Footer from "../footer/Footer";
+import {motion} from "framer-motion"
+import { useEffect } from "react";
 
 interface IPageContainerProps {
   children: React.ReactNode
 }
 
 export default function PageContainer({ children }: IPageContainerProps) {
+
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' 
+    })
+  }
+
+  useEffect(() => {
+    scrollToTop()
+  }, [])
+
   return (
-    <div
+    <motion.div
+
       className="bg-cover bg-center min-h-screen w-full flex bg-gray-200 flex-col justify-between"
       // style={{ backgroundImage: `url(${backgroundImage})` }} 
      >
       <Header />
-      <div className="p-4 pt-10 flex items-center flex-col">{children}</div>
+      <motion.div 
+        initial={{ opacity: 0, y: 100}}
+        animate={{ opacity: 1, y: 0}}
+        exit={{ opacity: 0, x: 100}}
+        transition={{ duration: 0.5 }}
+      className="p-4 pt-10 flex items-center flex-col">{children}</motion.div>
       <Footer/>
-    </div>
+    </motion.div>
   )
 }
