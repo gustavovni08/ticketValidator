@@ -25,7 +25,7 @@ export default function NavContainer({icon, label, path, activeButton, onClick}:
             handleNavigate()
             onClick(label)
         }}
-        className={`flex flex-col p-4 ${ label === activeButton ? 'bg-black text-white': 'bg-white border-r  hover:brightness-90'} w-full h-full justify-center text-sm items-center cursor-pointer`}>
+        className={`flex flex-col p-4 ${ label === activeButton ? 'text-black': ' text-gray-500 hover:brightness-90'} bg-white w-full h-full justify-center text-sm items-center cursor-pointer`}>
             {icon}
             {label}
         </div>

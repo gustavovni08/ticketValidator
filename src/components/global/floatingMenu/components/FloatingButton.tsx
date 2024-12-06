@@ -13,12 +13,9 @@ export default function FloatingButton({label, icon, path, row, onClick} : IFloa
     const navigate = useNavigate()
 
     function handleNavigate(){
-
         if(path){
             navigate(path)
         }
-        
-        return
     }
     
     return(
@@ -27,11 +24,11 @@ export default function FloatingButton({label, icon, path, row, onClick} : IFloa
             handleNavigate()
             onClick()
         }}
-        className={` ${row ? 'flex-row' : 'flex-col' } p-2 bg-black text-white rounded-lg shadow-md flex justify-between items-center space-x-1 hover:scale-105 hover:brightness-90 cursor-pointer`}>
-            <div>
+        className={`flex flex-col items-center justify-center p-4 bg-black text-white rounded-lg shadow-md space-y-2 hover:scale-105 hover:brightness-90 cursor-pointer ${ label ? 'w-[80px] h-[100px]' : 'h-[40px]'}`}>
+            <div className={`flex justify-center items-center ${ label ? '' : 'pt-2'}`}>
                 {icon}
             </div>
-            <div>
+            <div className="text-center text-sm">
                 {label}
             </div>
         </div>

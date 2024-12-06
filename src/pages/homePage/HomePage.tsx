@@ -2,6 +2,7 @@ import { ICardObjectProps } from "../../components/global/cardObject/CardObject"
 import DynamicList from "../../components/global/DynamicList/DynamicList"
 import PageContainer from "../../components/global/pageContainer/PageContainer"
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
+import banner from "../../assets/Gemini_Generated_Image_bqoxpobqoxpobqox.jpg"
 import image1 from "../../assets/CSA.webp"
 import image2 from "../../assets/CRB.webp"
 import image3 from "../../assets/CERVEJA.webp"
@@ -162,16 +163,41 @@ export default function HomePage(){
                 setActiveButton('Sorteios')
             }
         },
+        {
+            icon: <FaTicketAlt/>,
+            label:'Comprar Ingresso',
+            onClick: () => {
+                navigate('Events')
+                setActiveButton('Eventos')}
+        },
+        {
+            icon: <MdWorkspacePremium/> ,
+            label:'Comprar Bilhetes',
+            onClick: () => {
+                navigate('/Sweeptakes')
+            }
+        },
     ] 
 
 
     return(
         <PageContainer>
+            <div className="w-full flex overflow-x-scroll pt-10 snap-x  space-x-4 snap-mandatory">
+                <div className="w-full h-[20vh] rounded-md flex-shrink-0 snap-start">
+                    <img src={banner} alt="" className="object-cover w-full h-full rounded-md" />
+                </div>
+                <div className="w-full h-[20vh] rounded-md flex-shrink-0 snap-start">
+                    <img src={banner} alt="" className="object-cover w-full h-full rounded-md" />
+                </div>
+                <div className="w-full h-[20vh] rounded-md flex-shrink-0 snap-start">
+                    <img src={banner} alt="" className="object-cover w-full h-full rounded-md" />
+                </div>
+            </div>
             <FloatingMenu items={buttons}/>
             <DynamicList 
-            label="Eventos" 
+            label="Próximos Jogos" 
             list={events}
-            secondaryLabel="Sorteios"
+            secondaryLabel="Concorra Agora!"
             secondaryList={sweeptakes}/>
         </PageContainer>
     )

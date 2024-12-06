@@ -18,7 +18,7 @@ export default function DynamicList({
     return (
         <div className="w-full pt-10 min-h-[100vh] pb-20 flex flex-col items-center">
             
-            <div className="w-[90%] m-2 my-4 font-semibold text-lg">
+            <div className="w-[90%] text-white m-2 my-4 font-semibold text-lg">
                 {label}
             </div>
 
@@ -48,7 +48,7 @@ export default function DynamicList({
 
             
             {secondaryLabel && (
-                <div className="w-[90%] m-2 my-4 font-semibold text-lg">
+                <div className="w-[90%] text-white m-2 my-4 font-semibold text-lg">
                     {secondaryLabel}
                 </div>
             )}
