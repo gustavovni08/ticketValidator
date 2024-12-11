@@ -7,7 +7,7 @@ interface IFloatingMenuProps {
 export default function FloatingMenu({items} : IFloatingMenuProps){
 
     return(
-        <div className="w-[90%] overflow-y-scroll flex items-center justify-start pt-10">
+        <div className="w-[90%] overflow-x-scroll overflow-y-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex items-center justify-start pt-10">
             <div className="flex items-center space-x-4">
                 {items.map((item, index) => (
                     <FloatingButton

@@ -30,13 +30,13 @@ export default function Footer() {
         activeButton={activeButton}
         onClick={setActiveButton}
       />
-      <div className="bg-white flex items-start justify-center shadow-md relative">
+      <div className="bg-white flex items-start justify-center relative">
         <div
           onClick={() => {
             navigate('/Sweeptakes');
             setActiveButton('');
           }}
-          className="w-20 h-20 bg-gray-100 rounded-full border shadow-lg relative -top-6 flex items-center justify-center z-10"
+          className="w-20 h-20 bg-gray-100 rounded-full border shadow-lg relative -top-6 flex items-center justify-center z-10 hover:scale-105 hover:brightness-90 cursor-pointer"
         >
           <img
             src={image}

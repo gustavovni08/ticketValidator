@@ -24,7 +24,7 @@ export default function DynamicList({
 
             {list && (
                 <div 
-                    className={`w-full ${secondaryList ? 'flex-row overflow-x-scroll scrollbar-thin space-x-4 scrollbar-track-transparent overflow-hidden' : 'flex-col justify-center items-center pb-20 space-y-4'}  p-4 flex`}
+                    className={`w-full ${secondaryList ? 'flex-row overflow-x-scroll space-x-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent overflow-hidden' : 'flex-col justify-center items-center pb-20 space-y-4'}  p-4 flex`}
                 >
                     {list.map((item, index) => (
                             <CardObject
@@ -55,7 +55,7 @@ export default function DynamicList({
 
             {secondaryList && (
                 <div 
-                    className={`w-full flex-row overflow-x-scroll scrollbar-thin scrollbar-track-transparent overflow-hidden flex space-x-4 items-center p-4`}
+                    className={`w-full flex-row overflow-x-scroll  scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent overflow-hidden flex space-x-4 items-center p-4`}
                 >
                     {secondaryList.map((item, index) => (
                             <CardObject

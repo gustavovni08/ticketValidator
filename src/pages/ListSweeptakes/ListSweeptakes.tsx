@@ -11,6 +11,7 @@ import { useActiveButton } from "../../components/global/footer/context/ActiveBu
 import { SignUpContext } from "../../contexts/SignInContext"
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
+import { FaArrowLeft } from "react-icons/fa6"
 
 export default function ListSweeptakes(){
     
@@ -95,9 +96,20 @@ export default function ListSweeptakes(){
             }
         },
     ]
+
+    const buttons2 : IFloatingButtonProps[] = [
+        {
+            icon: <FaArrowLeft/>,
+            label:'',
+            path: '/',
+            onClick: () => {setActiveButton('Home')},
+            row: true,
+        },
+    ] 
     
     return(
         <PageContainer>
+            <FloatingMenu items={buttons2}/>
             <FloatingMenu items={buttons}/>
             <DynamicList 
             label="Sorteios" 

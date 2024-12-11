@@ -63,7 +63,7 @@ export default function CardObject({
     return (
     <div 
     onClick={handleNavigateDetails}
-    className="w-full max-w-[400px] min-w-[300px] bg-white shadow-md flex flex-col hover:scale-105 hover:brightness-90 rounded-md transition-transform duration-200 ease-in-out">
+    className="w-full max-w-[400px] min-w-[300px] bg-white shadow-md flex flex-col hover:scale-105 hover:brightness-90 rounded-md transition-transform duration-200 ease-in-out cursor-pointer">
         <div className="w-full h-[200px] overflow-hidden">
             <img src={image} alt={title} className="w-full  h-full object-cover rounded-t"/>
         </div>

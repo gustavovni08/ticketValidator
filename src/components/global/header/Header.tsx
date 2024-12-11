@@ -14,12 +14,35 @@ export default function Header(){
     const {user, setUser} = useContext(SignUpContext)
 
     return(
-        <div className="z-10 w-full fixed bg-white flex justify-end p-2 pr-4 border-b shadow-md space-x-4 text-lg">
-            <div className="hover:scale-105">
-                <IoMdNotificationsOutline/>
-            </div>
-            <div className="hover:scale-105">
-                <MdMenu/>
+        <div className={`flex items-center ${user ? 'justify-between' : 'justify-end'}  z-10 w-full fixed bg-white p-2 pr-4 border-b shadow-md space-x-4 text-lg`}>
+            {user && (
+                <div className="flex items-center space-x-4 pl-4">
+                    <div>
+                        <FaRegUserCircle/>
+                    </div>
+                    <div className="text-black text-sm">
+                        {user.nome}
+                    </div>
+                </div>
+            )}
+            
+            <div className="flex space-x-4">
+                {user && (
+                    <div 
+                    onClick={() => {
+                        setUser(null)
+                        navigate('/')
+                    }}
+                    className="hover:scale-105 z-10 cursor-pointer">
+                        <IoLogOut/>
+                    </div>
+                )}
+                <div className="hover:scale-105 z-10 cursor-pointer">
+                    <IoMdNotificationsOutline/>
+                </div>
+                <div className="hover:scale-105 cursor-pointer">
+                    <MdMenu/>
+                </div>
             </div>
         </div>
     )

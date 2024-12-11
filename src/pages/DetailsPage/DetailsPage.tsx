@@ -44,12 +44,14 @@ export default function DetailsPage(){
                 navigate('/signIn')
                 return
             }
+            window.open(`/Checkout/${1}/${type}/${id}`, '_blank')
         }
         if(type === 'sorteio'){
             if(!user){
                 navigate('/signIn')
                 return
             }
+            window.open(`/Checkout/${1}/${type}/${id}`, '_blank')
         }
         if( type === 'ingresso'){
             setShowTicketModal(true)

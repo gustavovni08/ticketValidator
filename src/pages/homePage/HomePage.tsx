@@ -11,14 +11,18 @@ import { FaTicketAlt } from "react-icons/fa";
 import { MdWorkspacePremium } from "react-icons/md";
 import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext"
 import { SignUpContext } from "../../contexts/SignInContext"
-import { useContext } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
+import { IoIosLogIn } from "react-icons/io";
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function HomePage(){
 
     const navigate = useNavigate()
     const {setActiveButton} = useActiveButton()
     const {user} = useContext(SignUpContext)
+    const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
+    // const containerRef = useRef<HTMLDivElement>(null)
 
     const events : ICardObjectProps[] = [
         {
@@ -177,22 +181,54 @@ export default function HomePage(){
                 navigate('/Sweeptakes')
             }
         },
+        {
+            icon: <IoIosLogIn /> ,
+            label:'Entrar',
+            onClick: () => {
+                navigate('/SignIn')
+            }
+        },
     ] 
+
+    const banners = [
+        {img: banner},
+        {img: image1},
+        {img: image2},
+    ]
+
+    function fowardBanner(){
+        setCurrentBannerIndex((prevIndex) =>
+            prevIndex === banners.length - 1 ? 0 : prevIndex + 1
+          )
+    }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fowardBanner()
+        }, 5000);
+    
+        return () => clearInterval(interval); // Limpa o intervalo ao desmontar
+      }, [banners.length]);
+
 
 
     return(
         <PageContainer>
-            <div className="w-full flex overflow-x-scroll pt-10 snap-x  space-x-4 snap-mandatory">
-                <div className="w-full h-[20vh] rounded-md flex-shrink-0 snap-start">
-                    <img src={banner} alt="" className="object-cover w-full h-full rounded-md" />
+            <AnimatePresence mode="wait">
+                <div className="w-full flex pt-10 snap-x  space-x-4 snap-mandatory">
+                    <div
+                    onClick={fowardBanner}
+                        className="w-full h-[20vh] rounded-md relative flex-shrink-0 snap-start">
+                        <motion.img 
+                        key={currentBannerIndex} 
+                        initial={{ opacity: 0}}
+                        animate={{ opacity: 1}}
+                        exit={{ opacity: 0}}
+                        transition={{ duration: 0.5 }}
+                        src={banners[currentBannerIndex].img} alt="" className="object-cover w-full h-full rounded-md hover:scale-y-105 hover:brightness-90 cursor-pointer" />
+                    </div>
                 </div>
-                <div className="w-full h-[20vh] rounded-md flex-shrink-0 snap-start">
-                    <img src={banner} alt="" className="object-cover w-full h-full rounded-md" />
-                </div>
-                <div className="w-full h-[20vh] rounded-md flex-shrink-0 snap-start">
-                    <img src={banner} alt="" className="object-cover w-full h-full rounded-md" />
-                </div>
-            </div>
+            </AnimatePresence>
             <FloatingMenu items={buttons}/>
             <DynamicList 
             label="Próximos Jogos" 

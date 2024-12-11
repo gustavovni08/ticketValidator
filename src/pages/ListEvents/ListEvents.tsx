@@ -3,7 +3,7 @@ import DynamicList from "../../components/global/DynamicList/DynamicList"
 import PageContainer from "../../components/global/pageContainer/PageContainer"
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
-import { FaTicketAlt } from "react-icons/fa";
+import { FaArrowLeft, FaTicketAlt } from "react-icons/fa";
 import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext"
 import { SignUpContext } from "../../contexts/SignInContext"
 import { useContext } from "react"
@@ -87,9 +87,20 @@ export default function ListEvents(){
         },
     ] 
 
+    const buttons2 : IFloatingButtonProps[] = [
+        {
+            icon: <FaArrowLeft/>,
+            label:'',
+            path: '/',
+            onClick: () => {setActiveButton('Home')},
+            row: true,
+        },
+    ] 
+
 
     return(
         <PageContainer>
+            <FloatingMenu items={buttons2}/>
             <FloatingMenu items={buttons}/>
             <DynamicList 
             label="Eventos" 
