@@ -24,7 +24,7 @@ const PageContainer: React.FC<IPageContainerProps> = React.memo(({ children }) =
       <div className="relative flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           <motion.div
-            key="page-content" // Adicione um key único se necessário
+            key="page-content"
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, x: 100 }}

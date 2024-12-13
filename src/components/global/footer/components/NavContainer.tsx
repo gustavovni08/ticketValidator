@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom"
 interface INavContainerProps {
     icon: JSX.Element
     label: string
-    path: string
+    path?: string
     activeButton: string
-    onClick: (val: string) => void
+    onClick: () => void
 }
 
 
@@ -16,14 +16,16 @@ export default function NavContainer({icon, label, path, activeButton, onClick}:
     const navigate = useNavigate()
 
     function handleNavigate(){
-        navigate(path)
+      
+        if(path) navigate(path)
+
     }
 
     return(
         <div 
         onClick={() => {
             handleNavigate()
-            onClick(label)
+            onClick()
         }}
         className={`flex flex-col p-4 ${ label === activeButton ? 'text-black': ' text-gray-500 hover:brightness-90'} bg-white w-full h-full justify-center text-sm items-center cursor-pointer`}>
             {icon}

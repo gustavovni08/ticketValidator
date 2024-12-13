@@ -45,7 +45,7 @@ export default function ModalContainer({isOpen, closeModal, children} : IModalCo
             >
               <motion.div
                 ref={modalRef}
-                className="bg-white w-4/5 rounded-lg max-h-[90%] overflow-y-scroll shadow-md"
+                className="bg-white w-4/5 rounded-lg max-h-[90%] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent shadow-md"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}

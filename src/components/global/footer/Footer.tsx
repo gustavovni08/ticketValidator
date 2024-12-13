@@ -4,12 +4,13 @@ import { IoMdFootball } from "react-icons/io";
 import { IoStorefront } from "react-icons/io5";
 import image from "../../../assets/pngwing.com.png";
 import { useNavigate } from "react-router-dom";
-
-
 import NavContainer from "./components/NavContainer";
 import { useActiveButton } from "./context/ActiveButtonContext";
+import { SignUpContext } from "../../../contexts/SignInContext";
+import { useContext } from "react";
 
 export default function Footer() {
+  const {user} = useContext(SignUpContext)
   const { activeButton, setActiveButton } = useActiveButton();
   const navigate = useNavigate();
 
@@ -21,14 +22,14 @@ export default function Footer() {
         label="Home"
         path="/"
         activeButton={activeButton}
-        onClick={setActiveButton}
+        onClick={() => setActiveButton('Home')}
       />
       <NavContainer
         icon={<IoMdFootball />}
         label="Jogos"
         path="/Events"
         activeButton={activeButton}
-        onClick={setActiveButton}
+        onClick={() => setActiveButton('Jogos')}
       />
       <div className="bg-white flex items-start justify-center relative">
         <div
@@ -48,16 +49,22 @@ export default function Footer() {
       <NavContainer
         icon={<FaTicketAlt />}
         label="Ingressos"
-        path="/Sweeptakes"
         activeButton={activeButton}
-        onClick={setActiveButton}
+        onClick={() => {
+          if(!user){
+            navigate('/SignIn')
+            return
+          }
+          navigate('/Tickets')
+          setActiveButton('Ingressos')
+        }}
       />
       <NavContainer
         icon={<IoStorefront />}
-        label="loja"
+        label="Loja"
         path="/"
         activeButton={activeButton}
-        onClick={setActiveButton}
+        onClick={ () => setActiveButton('Loja')}
       />
     </div>
   );

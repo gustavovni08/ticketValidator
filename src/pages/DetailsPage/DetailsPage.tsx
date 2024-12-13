@@ -44,14 +44,14 @@ export default function DetailsPage(){
                 navigate('/signIn')
                 return
             }
-            window.open(`/Checkout/${1}/${type}/${id}`, '_blank')
+            navigate(`/Checkout/${1}/${type}/${id}`)
         }
         if(type === 'sorteio'){
             if(!user){
                 navigate('/signIn')
                 return
             }
-            window.open(`/Checkout/${1}/${type}/${id}`, '_blank')
+            navigate(`/Checkout/${1}/${type}/${id}`)
         }
         if( type === 'ingresso'){
             setShowTicketModal(true)
@@ -187,7 +187,7 @@ export default function DetailsPage(){
                         {type !== 'bilhete' && (
                             <div 
                             onClick={typeFunctionController}
-                            className="flex w-4/5 bg-black p-4 rounded-lg items-center justify-center shadow-md hover:scale-105 hover:brightness-90">
+                            className="flex w-4/5 bg-black p-4 rounded-lg items-center justify-center shadow-md hover:scale-105 hover:brightness-90 cursor-pointer">
                                     {type === "evento" && (
                                         <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                             <div>
@@ -224,7 +224,7 @@ export default function DetailsPage(){
                         {type === "bilhete" && (
                              <div 
                              onClick={typeFunctionController}
-                             className={`flex w-4/5 ${result ? 'bg-black hover:scale-105 hover:brightness-90' : 'bg-gray-400'} p-4 rounded-lg items-center justify-center shadow-md`}>
+                             className={`flex w-4/5 ${result ? 'bg-black hover:scale-105 hover:brightness-90' : 'bg-gray-400'} p-4 rounded-lg items-center justify-center shadow-md cursor-pointer`}>
                             <div className="text-white text-lg font-[600] flex items-center space-x-4">
                                 <div>
                                     <MdWorkspacePremium/>

@@ -5,6 +5,11 @@ import { useParams } from "react-router-dom"
 import { ICardObjectProps } from "../../components/global/cardObject/CardObject"
 import ProductUnitController from "./components/ProductUnitController"
 import SubtotalFooter from "./components/SubtotalFooter"
+import { motion } from 'framer-motion'
+import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
+import { FaArrowLeft } from "react-icons/fa6"
+import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext"
+import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
 
 
 export interface ITicketType{
@@ -18,6 +23,7 @@ export interface ITicketType{
 export default function CheckOutPagePage(){
 
     const {userID, productID, productType} = useParams()
+    const {setActiveButton} = useActiveButton()
     console.log(userID, productID)
 
     const products : ICardObjectProps[] = [
@@ -133,6 +139,16 @@ export default function CheckOutPagePage(){
 
     ]
 
+    const buttons : IFloatingButtonProps[] = [
+        {
+            icon: <FaArrowLeft/>,
+            label:'',
+            path: '/',
+            onClick: () => {setActiveButton('Home')},
+            row: true,
+        },
+    ] 
+
 
     return(
         <div className="flex flex-col space-y-2">
@@ -145,9 +161,15 @@ export default function CheckOutPagePage(){
                 </div>
             </div>
             {productID && (
-                <div className="w-full max-h-[100vh] pb-48 overflow-y-scroll items-center flex flex-col pt-10">
+                <motion.div 
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: 100 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-h-[100vh] pb-48 overflow-y-scroll items-center flex flex-col pt-10">
                     {productType === 'sorteio' && (
                         <div className="w-[90%] flex flex-col items-center justify-center space-y-4">
+                            <FloatingMenu items={buttons}/>
                             <div className="font-[600] text-lg">
                                 {products[parseInt(productID) === 1 ? parseInt(productID) - 1 : parseInt(productID) + 1].title}
                             </div>
@@ -161,6 +183,7 @@ export default function CheckOutPagePage(){
                     )}
                     {productType === 'evento' && (
                         <div className="w-[90%] flex flex-col items-center justify-center space-y-4">
+                            <FloatingMenu items={buttons}/>
                             <div className="font-[600] text-lg">
                                 {products[parseInt(productID) + 3].title}
                             </div>
@@ -201,7 +224,7 @@ export default function CheckOutPagePage(){
                             />
                         </>
                     )}
-                </div>
+                </motion.div>
             )}
             <SubtotalFooter
             object={products[parseInt(productID!)]}
