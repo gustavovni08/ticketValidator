@@ -31,7 +31,7 @@ export default function ModalContainer({isOpen, closeModal, children} : IModalCo
           document.removeEventListener("mousedown", handleEvent)
           document.removeEventListener("touchstart", handleEvent)
         }
-      }, [])
+      }, [closeModal])
     
     return(
         <AnimatePresence>

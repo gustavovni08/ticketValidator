@@ -106,6 +106,7 @@ export default function PaymentPage(){
             }}
             title="PAGAMENTO CONFIRMADO"
             message="Retorne ao app e confira seus Ingressos"
+            type="confirm"
             textButton={`
                 ${object?.type === 'sorteio' ? 'Ver Bilhetes' : ''} 
                 ${object?.type === 'evento' ? 'Ver Ingressos' : ''}

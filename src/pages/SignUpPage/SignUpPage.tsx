@@ -8,6 +8,7 @@ import { IUser, SignUpContext } from "../../contexts/SignInContext"
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
 import { FaArrowLeft } from "react-icons/fa6"
 import { motion } from "framer-motion"
+import { api } from "../../services/api"
 
 export default  function GuardianSignUpPage(){
     
@@ -132,9 +133,9 @@ export default  function GuardianSignUpPage(){
 
     }
 
-    function validateData(){
+    const validateData = async () => {
 
-        const requiredFields = { CPF, password, name, telphone, CEP, address, addressNumber, email, birthDate, UF, city };
+        const requiredFields = { CPF, password, name, telphone, email, };
         const emptyFields = Object.keys(requiredFields).filter(key => !requiredFields[key as keyof typeof requiredFields]);
     
         if (emptyFields.length > 0) {
@@ -165,35 +166,41 @@ export default  function GuardianSignUpPage(){
         //     return
         // }
 
-        const validacaoCEP = validarCEP(CEP)
+        // const validacaoCEP = validarCEP(CEP)
 
-        if(!validacaoCEP){
-            window.alert('CEP Inválido')
-            setEmptyFields(['CEP'])
-            scrollToTop()
-            return
+        // if(!validacaoCEP){
+        //     window.alert('CEP Inválido')
+        //     setEmptyFields(['CEP'])
+        //     scrollToTop()
+        //     return
+        // }
+
+        try {
+
+            const user : IUser =  {
+                // CEP: CEP, 
+                // cidade: city,
+                // complemento: complement,
+                document: CPF,
+                email: email,
+                // endereco: address,
+                nome: name,
+                role:'CUSTOMER',
+                // numeroEndereco: addressNumber,
+                senha: password,
+                contato: telphone,
+                // UF: UF,
+            }
+
+            setUser(user)
+            navigate('/FacialUpload')
+            const {data} = await api.post('/register', user)
+            console.log(data)
+
+            
+        } catch (error) {
+            window.alert(error)
         }
-
-
-        const user : IUser =  {
-            CEP: CEP, 
-            cidade: city,
-            complemento: complement,
-            CPF: CPF,
-            email: email,
-            endereco: address,
-            nome: name,
-            numeroEndereco: addressNumber,
-            senha: password,
-            telefone: telphone,
-            UF: UF,
-        }
-
-        
-        setUser(user)
-
-        navigate('/FacialUpload')
-        
     }
 
     useEffect(() => {
@@ -247,12 +254,10 @@ export default  function GuardianSignUpPage(){
                     <div className="w-4/5">
                         Criar Conta
                     </div>
-                    <div className="w-4/5 text-[0.8rem] font-[400]">
+                    {/* <div className="w-4/5 text-[0.8rem] font-[400]">
                         Passo {step} de 2.
-                    </div>
+                    </div> */}
                 </div>
-
-                {step === 1 && (
 
                     <>
                     
@@ -314,24 +319,24 @@ export default  function GuardianSignUpPage(){
                         disabled={!name || !password || !CPF || !birthDate}
                         onClick={() => {
 
-                            const validacaoCPF = validarCPF(CPF)
-                            const validacaoDataNascimento = validarDataNascimento(birthDate)
+                            validateData()
+                            // const validacaoCPF = validarCPF(CPF)
+                            // const validacaoDataNascimento = validarDataNascimento(birthDate)
 
-                            if(!validacaoCPF){
-                                window.alert('CPF inválido')
-                                setEmptyFields(['CPF'])
-                                scrollToTop()
-                                return
-                            }
+                            // if(!validacaoCPF){
+                            //     window.alert('CPF inválido')
+                            //     setEmptyFields(['CPF'])
+                            //     scrollToTop()
+                            //     return
+                            // }
 
-                            if(!validacaoDataNascimento){
-                                window.alert('O responsável deve ter maior de 18 anos')
-                                setEmptyFields(['birthDate'])
-                                scrollToTop()
-                                return
-                            }
+                            // if(!validacaoDataNascimento){
+                            //     window.alert('O responsável deve ter maior de 18 anos')
+                            //     setEmptyFields(['birthDate'])
+                            //     scrollToTop()
+                            //     return
+                            // }
 
-                            setStep(2)
                             scrollToTop()
 
                         }}
@@ -339,8 +344,6 @@ export default  function GuardianSignUpPage(){
                         
 
                     </>
-
-                )}
 
                 {step === 2 && (
                     <>

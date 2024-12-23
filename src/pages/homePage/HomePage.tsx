@@ -15,14 +15,16 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import { IoIosLogIn } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion"
+import { api, exequery, IExequery } from "../../services/api"
 
 export default function HomePage(){
 
     const navigate = useNavigate()
     const {setActiveButton} = useActiveButton()
-    const {user} = useContext(SignUpContext)
+    const {user, token} = useContext(SignUpContext)
     const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
-    // const containerRef = useRef<HTMLDivElement>(null)
+    const url = process.env.REACT_APP_BASE_URL
+
 
     const events : ICardObjectProps[] = [
         {
@@ -202,15 +204,51 @@ export default function HomePage(){
           )
     }
 
+
+    const getEvents = async () => {
+        try {
+            const request : IExequery = {
+                method: 'get',
+                route: '/events',
+                isPublic: true,
+                token: ''
+            }
+            const data = await exequery(request) 
+            console.log(data)
+
+        } catch (error) {
+            window.alert(error)
+        }
+    }
+
+    const getSweptakes = async () => {
+        try {
+            const request : IExequery = {
+                method: 'get',
+                route: '/raffles/available',
+                isPublic: true,
+                token: ''
+            }
+            const data = await exequery(request) 
+            console.log(data)
+
+        } catch (error) {
+            window.alert(error)
+        }
+    }
+
+    useEffect(() => {
+        getEvents()
+        getSweptakes()
+    }, [])
+
     useEffect(() => {
         const interval = setInterval(() => {
             fowardBanner()
         }, 5000);
     
-        return () => clearInterval(interval); // Limpa o intervalo ao desmontar
-      }, [banners.length]);
-
-
+        return () => clearInterval(interval)
+    }, [banners.length]);
 
     return(
         <PageContainer>

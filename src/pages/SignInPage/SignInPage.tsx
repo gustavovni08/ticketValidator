@@ -1,5 +1,5 @@
 
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Button from "../../components/buttons/Button";
 import TextInput from "../../components/inputs/TextInput";
 import { useNavigate } from "react-router-dom";
@@ -9,16 +9,21 @@ import { useActiveButton } from "../../components/global/footer/context/ActiveBu
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu";
 import { IUser, SignUpContext } from "../../contexts/SignInContext";
 import {motion} from "framer-motion"
+import { api } from "../../services/api";
+import { IConfirmModalProps } from "../../components/modal/ConfirmModal/ConfirmModal";
+import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal";
 
 
 export default function SignInPage(){
 
     const [login, setLogin] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const [showModal, setShowModal] = useState<boolean>(false)
+    const [modalProps, setModalProps] = useState<IConfirmModalProps>({closeModal: () => {}, isOpen: false, title: '', type:'confirm', auxFunction: () => {}, message:'', onConfirm: () => {}, textButton: ''})
     const {setActiveButton} = useActiveButton()
     const navigate = useNavigate()
 
-    const{setUser} = useContext(SignUpContext)
+    const{setUser, setToken} = useContext(SignUpContext)
 
     const buttons : IFloatingButtonProps[] = [
         {
@@ -30,27 +35,77 @@ export default function SignInPage(){
         },
     ] 
 
-    function handleLogin(){
-        const user : IUser = {
-            nome:'Vinicius Gustavo Costa Leite',
-            CEP: '',
-            cidade: '',
-            complemento: '',
-            CPF: '',
-            email: '',
-            endereco: '',
-            numeroEndereco:'',
-            senha:'',
-            telefone:'',
-            UF:''
+
+    const handleLogin = async () => {
+
+        try {
+
+            const body = { email: login, password: password,}
+            const {data} = await api.post('/loginapi', body)
+            setToken(data.access_token)
+            console.log(data)
+
+            
+            const user : IUser = {
+                nome: data.user.name,
+                document: data.user.document,
+                role:data.user.role,
+                email: data.user.email,
+                senha: '',
+                contato:'',
+            }
+
+            const modalProps : IConfirmModalProps = {
+                closeModal: () => {
+                    console.log('yea')
+                    setUser(user)
+                    navigate(-1)
+                    setShowModal(false)
+                },
+                isOpen: true,
+                title: 'Login feito com sucesso!',
+                type: 'confirm',
+                message: `Login feito com sucesso!`,
+                onConfirm: () => {
+                    setUser(user)
+                    navigate(-1)
+                },
+            }
+            setModalProps({...modalProps})
+            setShowModal(true)
+
+
+
+        } catch (error) {
+            const modalProps : IConfirmModalProps = {
+                closeModal: () => {setShowModal(false)},
+                isOpen: true,
+                title: 'Ops, ocorreu algum erro...',
+                type: 'error',
+                message: `${error}`,
+            }
+            setModalProps({...modalProps})
+            setShowModal(true)
         }
 
-        setUser(user)
-        navigate(-1)
+
     }
 
+    // console.log(modalProps)
+
     return(
-        <div className="bg-gray-200">
+        <>
+            <ConfirmModal
+            closeModal={() => {modalProps?.closeModal?.()}}
+            isOpen={showModal}
+            title={modalProps?.title || ''}
+            type={modalProps?.type || 'confirm'}
+            message={modalProps?.message || ''}
+            onConfirm={modalProps?.onConfirm}
+            textButton={modalProps?.textButton}
+            // auxFunction={modalProps?.auxFunction}
+            />
+            <div className="bg-gray-200">
             <motion.div 
             initial={{ opacity: 0, y: 100}}
             animate={{ opacity: 1, y: 0}}
@@ -67,7 +122,7 @@ export default function SignInPage(){
                 <div className="flex justify-center min-h-[40vh] bg-white p-4 shadow-md rounded-md pb-10 items-center w-[90%] flex-col">
 
                     <div className="w-full flex items-center justify-center m-2">
-                        <TextInput type="number" label="Digite seu Email" value={login} onChange={(event) => {setLogin(event.target.value)}}/>
+                        <TextInput label="Digite seu Email" value={login} onChange={(event) => {   setLogin(event.target.value)}}/>
                     </div>
 
 
@@ -95,7 +150,9 @@ export default function SignInPage(){
 
 
             </motion.div>
-        </div>
+            </div>
+        </>
+
         
     )
 }
