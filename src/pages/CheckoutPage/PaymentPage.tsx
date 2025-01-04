@@ -36,12 +36,12 @@ export default function PaymentPage(){
 
     const getOrderData = useCallback(async () => {
         try {
-          const {data} = await axios.get(`https://api-totem.pacsafe.com.br/api/checkout/${order?.id}`)
+          const {data} = await axios.get(`https://api-totem.pacsafe.com.br/api/checkout/${order?.charge.id}`)
           setStatus(data.order.status)
         } catch (error) {
           console.error(error)
         }
-    }, [order?.id])
+    }, [order?.charge.id])
     
     function formatTime (seconds: number) {
         const minutes = Math.floor(seconds / 60)
@@ -50,11 +50,11 @@ export default function PaymentPage(){
     }
 
     const generateQRCode = useCallback(() => {
-        if (order?.payment.qr_code) {
-          const url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(order?.payment.qr_code)}`
+        if (order?.charge.chave_pix) {
+          const url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(order?.charge.chave_pix)}`
           setQrCodeUrl(url)
         }
-    }, [order?.payment.qr_code])
+    }, [order?.charge.chave_pix])
 
     
     useEffect(() => {
@@ -151,9 +151,9 @@ export default function PaymentPage(){
                         <div className="flex flex-col w-[97%]">
                             {
                                 [
-                                    {label: 'Número da Compra:', value: order?.order.number},
-                                    {label: 'Valor da Compra:', value: `R$ ${formatAmount(order?.order.total || 0)}`},
-                                    {label: 'Forma de Pagamento:', value: order?.order.meio_contribuicao},
+                                    {label: 'Número da Compra:', value: order?.charge.id},
+                                    {label: 'Valor da Compra:', value: `R$ ${formatAmount(parseFloat(order?.charge.total_price || '0'))}`},
+                                    {label: 'Forma de Pagamento:', value: order?.charge.payment_method},
                                     {label: 'A Compra expira em:', value: formatTime(timeLeft)},
                                 ].map((item) => {
                                     return(
@@ -173,9 +173,9 @@ export default function PaymentPage(){
                             <img src={qrCodeUrl} alt="qrCode" className="rounded-md"/>
                         </div>
                         <div 
-                        onClick={() => {navigator.clipboard.writeText(order?.payment.qr_code || '')}}
+                        onClick={() => {navigator.clipboard.writeText(order?.charge.chave_pix || '')}}
                         className="flex w-full border p-2 shadow-md rounded-full hover:brightness-90 hover:scale-95 transition-transform duration-300 cursor-pointer">
-                            <div className="truncate text-sm">{order?.payment.qr_code}</div>
+                            <div className="truncate text-sm">{order?.charge.chave_pix}</div>
                             <div className="text-sm font-[600] border-l pl-2">Copiar</div>
                         </div>
                     </div>

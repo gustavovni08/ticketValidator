@@ -178,6 +178,7 @@ export default  function GuardianSignUpPage(){
         try {
 
             const user : IUser =  {
+                id:0,
                 // CEP: CEP, 
                 // cidade: city,
                 // complemento: complement,

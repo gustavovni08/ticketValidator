@@ -2,30 +2,33 @@ import { createContext, useState } from "react";
 import { IProductOrderSumary } from "../components/ProductUnitController";
 import { ICardObjectProps } from "../../../components/global/cardObject/CardObject";
 
-
-interface IOrderResponse {
-    message: string;
-    id: number;
-    order: {
-        number: string;
-        total: number;
-        status: string;
-        meio_contribuicao: string;
-        external_id: number;
-        method: number;
-        mercadopago_status: number;
-        installments: number;
-        approved_at: string | null;
-        qr_code_64: string;
-    };
-    payment: {
-        qr_code: string;
-        qr_code_64: string;
-    };
+interface Charge {
+    user_id: number
+    charge_type: string
+    total_price: string
+    payment_status: number
+    payment_method: string
+    discount_percentage: number | null
+    total_price_discount: number
+    status: number
+    external_id: number
+    updated_at: string
+    created_at: string
+    id: number
+    ticket_url: string
+    qr_code_pix: string
+    chave_pix: string
+  }
+  
+  
+export interface IOrderResponse {
+    message: string
+    charge: Charge
 }
 
 
 interface ICheckOutContextProps {
+
     amount: number
     setAmount:(amount: number) => void
     items: IProductOrderSumary[]
@@ -34,7 +37,6 @@ interface ICheckOutContextProps {
     setObject: (obj: ICardObjectProps | null) => void
     order: IOrderResponse | null
     setOrder: (order: IOrderResponse | null) => void
-
 
 }
 

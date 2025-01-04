@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import Button from "../../../components/buttons/Button";
-import { CheckoutContext } from "../context/CheckoutContext";
+import { CheckoutContext, IOrderResponse } from "../context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
 import { ICardObjectProps } from "../../../components/global/cardObject/CardObject";
 import axios from "axios"
+import { SignUpContext } from "../../../contexts/SignInContext";
+import { exequery, IExequery } from "../../../services/api";
 
 
 interface ISubtotalFooterProps {
@@ -18,6 +20,7 @@ export function formatAmount(amount: number){
 
 export default function SubtotalFooter({object}: ISubtotalFooterProps){
 
+    const {user, token} = useContext(SignUpContext)
     const {amount, items, setObject, setOrder} = useContext(CheckoutContext)
     const navigate = useNavigate()
 
@@ -26,15 +29,43 @@ export default function SubtotalFooter({object}: ISubtotalFooterProps){
         setObject(object)
         
         const body = {
-            preco: amount,
-            email: 'gustavovni08@gmail.com',
-            description: `${object.title} - ${object.type}`
+            user_id: user?.id,
+            amount: amount,
+            ticket_type_id:items[0].id,
+            quantity:1,
+            payment_method:'pix'
         }
         
         try {
-            const {data} = await axios.post('https://api-totem.pacsafe.com.br/api/checkout', body)
-            setOrder(data)
-            console.log(data)
+            if(object.type === 'evento'){  
+                const query : IExequery = {
+                    isPublic: false, 
+                    method: 'post',
+                    route: '/create-charge-ticket',
+                    token:token,
+                    body: body
+                }
+                const data : IOrderResponse = await exequery(query)
+
+                setOrder(data)
+                console.log(data)   
+            }
+
+            if(object.type === 'sorteio'){
+                  
+                const query : IExequery = {
+                    isPublic: false, 
+                    method: 'post',
+                    route: '/create-charge-raffle',
+                    token:token,
+                    body: body
+                }
+                const data : IOrderResponse = await exequery(query)
+
+                setOrder(data)
+                console.log(data)   
+            }
+        
         } catch (error) {
             console.error(error)
         }

@@ -95,10 +95,12 @@ export default function DetailsPage(){
             <FloatingMenu items={buttons}/>
                 <div className="min-h-[100vh] w-full pb-[30%] justify-center items-center">
                     <div className="flex flex-col w-full max-h-[100%] p-4 mt-10 space-y-4 bg-white border shadow-lg rounded-md">
-                    <div className="w-full tetx-lg font-[600]">
-                        {title}
+                    <div className="w-full tetx-lg font-[600] flex justify-center">
+                        <div>
+                            {title}
+                        </div>
                     </div>
-                    <div>
+                    <div className="flex justify-center">
                         <img src={image} alt={title} className="rounded-md"/>
                     </div>
                     <div className="py-4 border-y h-[20vh] overflow-y-scroll">

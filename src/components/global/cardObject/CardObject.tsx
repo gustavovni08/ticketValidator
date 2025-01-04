@@ -18,6 +18,7 @@ export interface ICardObjectProps {
     price?: string
     qrcode?: string
     result?: string
+    qtd?: number
 
 }
 

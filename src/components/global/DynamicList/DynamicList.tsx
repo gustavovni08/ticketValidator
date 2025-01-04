@@ -45,7 +45,6 @@ export default function DynamicList({
                     ))}
                 </div>
             )}
-
             
             {secondaryLabel && (
                 <div className="w-[90%] text-white m-2 my-4 font-semibold text-lg">

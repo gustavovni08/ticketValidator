@@ -5,38 +5,21 @@ import { IFloatingButtonProps } from "../../components/global/floatingMenu/compo
 import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext"
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
 import { FaArrowLeft } from "react-icons/fa6"
+import LoadingElement from "../../components/global/LoadingElement/LoadingElement"
+import { useContext, useEffect, useState } from "react"
+import { exequery, IExequery } from "../../services/api"
+import { SignUpContext } from "../../contexts/SignInContext"
+import { useNavigate } from "react-router-dom"
 
 export default function ListTickets(){
 
 
+    const {token, user} = useContext(SignUpContext)
     const {setActiveButton} = useActiveButton()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const navigate = useNavigate()
 
-    const events : ICardObjectProps[] = [
-        {
-            id: '1',
-            title:'CSA X CRB FINAL CAMPEONATO ALAGOANO',
-            image: 'https://pbs.twimg.com/media/Eer4UbIXoAcQ4Nu?format=jpg&name=large',
-            location: 'Estádio Rei Pelé',
-            date:'Domingo, 12 de Dezembro',
-            description: 'É chegada a hora de decidir quem será o grande campeão alagoano! Não perca a chance de testemunhar um dos maiores clássicos do futebol estadual: CSA vs CRB. A rivalidade mais eletrizante de Alagoas entra em campo com toda a sua paixão, história e emoção, e você não pode ficar de fora!',
-            type: 'ingresso',
-            time: '18hrs',
-            qrcode:'data:image/png;base64,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',
-
-        },
-        {
-            id:'2',
-            title:'CORINTHIANS X SÃO PAULO FINAL CAMPEONATO PAULISTA', 
-            image: 'https://p2.trrsf.com/image/fget/cf/774/0/images.terra.com/2023/07/25/1324107904-whatsapp-image-2023-07-24-at-131306.jpeg',
-            location: 'Estádio Cícero Pompeu de Toledo',
-            date:'Domingo, 12 de Dezembro',
-            description: 'O momento mais aguardado pelos torcedores paulistas está chegando! Corinthians e São Paulo se enfrentam na grande final do Campeonato Paulista 2024. Dois gigantes do futebol brasileiro em um duelo de tirar o fôlego, com a taça mais tradicional do estado em jogo.',
-            type: 'ingresso',
-            time: '18h:00rs',
-            qrcode:'data:image/png;base64,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',
-
-        },
-    ]
+    const [events, setEvents] = useState([])
 
     const buttons : IFloatingButtonProps[] = [
         {
@@ -48,13 +31,46 @@ export default function ListTickets(){
         },
     ] 
 
+    async function getTickets() {
+        try {
+            const query : IExequery = {
+                isPublic: false,
+                method: 'get',
+                route:`/tickets`,
+                token: token
+            }
+
+            const data = await exequery(query)
+            console.log(data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
+    useEffect(() => {
+
+        if(!user){
+            navigate('/SignIn')
+        }
+        
+        const fetchData = async () => {
+            await getTickets()
+        }
+
+        fetchData()
+
+    }, [])
+
 
     return(
         <PageContainer>
-            <FloatingMenu items={buttons}/>
-            <DynamicList
-            label="Meus Ingressos"
-            list={events}/>
+            <LoadingElement isLoading={isLoading}>
+                <FloatingMenu items={buttons}/>
+                <DynamicList
+                label="Meus Ingressos"
+                list={events}/>
+            </LoadingElement>
         </PageContainer>
     )
 }

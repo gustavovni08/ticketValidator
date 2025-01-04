@@ -18,7 +18,7 @@ export async function exequery({method, route, token, isPublic, body} : IExequer
 
         if(method === 'get' && !isPublic){
             const {data} = await api.get(route, {headers: {
-                authentication: `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }})
             return data
         }
@@ -30,7 +30,7 @@ export async function exequery({method, route, token, isPublic, body} : IExequer
 
         if(method === 'post' && !isPublic){
             const {data} = await api.post(route, body, {headers: {
-                authentication: `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }})
             return data
         }
@@ -42,7 +42,7 @@ export async function exequery({method, route, token, isPublic, body} : IExequer
 
         if(method === 'delete' &&  !isPublic){
             const {data} = await api.delete(route, {headers: {
-                authentication: `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }})
             return data
         }
@@ -54,7 +54,7 @@ export async function exequery({method, route, token, isPublic, body} : IExequer
 
         if(method == 'put' && !isPublic){
             const {data} = await api.put(route, body, {headers: {
-                authentication: `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }})
             return data
         }

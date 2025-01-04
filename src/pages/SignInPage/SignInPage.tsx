@@ -47,6 +47,7 @@ export default function SignInPage(){
 
             
             const user : IUser = {
+                id: data.user.id,
                 nome: data.user.name,
                 document: data.user.document,
                 role:data.user.role,
