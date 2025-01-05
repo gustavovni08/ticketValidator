@@ -11,6 +11,7 @@ import FacialUploadPage from './pages/SignUpPage/FacialUploadPage';
 import FacialCapturePage from './pages/SignUpPage/FacialCapturePage';
 import CheckOutPage from './pages/CheckoutPage/CheckoutPage';
 import PaymentPage from './pages/CheckoutPage/PaymentPage';
+import ValidateTicket from './pages/ValidateTicket/ValidateTicket';
 import { ActiveButtonProvider } from './components/global/footer/context/ActiveButtonContext';
 import { SignUpContextProvider } from './contexts/SignInContext';
 import { CheckOutContextProvider } from './pages/CheckoutPage/context/CheckoutContext';
@@ -35,6 +36,7 @@ export default function App() {
                       <Route path="/FacialCapture" element={<FacialCapturePage/>}/>        
                       <Route path="/Checkout/:userID/:productType/:productID" element={<CheckOutPage />} />
                       <Route path="/Payment" element={<PaymentPage/>}/>
+                      <Route path="/ValidateTicket" element={<ValidateTicket/>}/>
                     </Routes>
               </Router>
             </CheckOutContextProvider>

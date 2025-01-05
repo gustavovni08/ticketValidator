@@ -31,7 +31,7 @@ export default function SubtotalFooter({object}: ISubtotalFooterProps){
         const body = {
             user_id: user?.id,
             amount: amount,
-            ticket_type_id:items[0].id,
+            ticket_type_id:items[0].ticketTypeID,
             quantity:1,
             payment_method:'pix'
         }

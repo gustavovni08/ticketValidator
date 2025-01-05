@@ -14,6 +14,8 @@ import { useContext, useEffect, useState } from "react"
 import { exequery, IExequery } from "../../services/api"
 import { SignUpContext } from "../../contexts/SignInContext"
 import LoadingElement from "../../components/global/LoadingElement/LoadingElement"
+import { CheckoutContext } from "./context/CheckoutContext"
+import SelectItemContainer from "./components/SelectIIemContainer"
 
 
 export interface ITicketType{
@@ -71,6 +73,7 @@ export default function CheckOutPagePage(){
 
     const {productID, productType} = useParams()
     const {token, user} = useContext(SignUpContext)
+    const {setItems, setAmount} = useContext(CheckoutContext)
     const {setActiveButton} = useActiveButton()
     const navigate = useNavigate()
     const [product, setProduct] = useState<ICardObjectProps>()
@@ -153,6 +156,8 @@ export default function CheckOutPagePage(){
         if(!user){
             navigate('/')
         }
+        setItems([])
+        setAmount(0)
         const fetchData = async () => {
             await getProduct()
         }
@@ -164,7 +169,10 @@ export default function CheckOutPagePage(){
             icon: <FaArrowLeft/>,
             label:'',
             path: '/',
-            onClick: () => {setActiveButton('Home')},
+            onClick: () => {
+                setItems([])
+                setActiveButton('Home')
+            },
             row: true,
         },
     ] 
@@ -204,28 +212,42 @@ export default function CheckOutPagePage(){
                     )}
                     {productType === 'sorteio' && (
                         <div className="w-full">
-                            <ProductUnitController 
+                            <SelectItemContainer
+                                eventID={productID}
+                                price={parseFloat(product?.price || '2.99')}
+                                ticketTypeID={product?.id || '1'}
+                                ticketTypeName={product?.title || 'BILHETE'}
+                                qtdAvailable={product?.qtd || 99999}
+                            />
+                            {/* <ProductUnitController 
                             eventID={productID}
                             price={parseFloat(product?.price || '2.99')}
-                            ticketTypeID="1"
+                            ticketTypeID={product?.id || '1'}
                             ticketTypeName={product?.title || 'BILHETE'}
                             qtdAvailable={product?.qtd || 99999}
-                            />
+                            /> */}
                         </div>
                     )}
                     {productType === 'evento' && ticketsTypes && (
                         <>
                             {ticketsTypes.map((item, index) => {
                                 return(
-                            
-                                    <ProductUnitController 
-                                    key={index}
-                                    eventID={productID}
-                                    price={item.price}
-                                    ticketTypeID={item.ticketTypeID}
-                                    ticketTypeName={item.ticketTypeName}
-                                    qtdAvailable={item.qtdAvailable}
+                                    <SelectItemContainer
+                                     key={index}
+                                     eventID={productID}
+                                     price={item.price}
+                                     ticketTypeID={item.ticketTypeID}
+                                     ticketTypeName={item.ticketTypeName}
+                                     qtdAvailable={item.qtdAvailable}
                                     />
+                                    // <ProductUnitController 
+                                    // key={index}
+                                    // eventID={productID}
+                                    // price={item.price}
+                                    // ticketTypeID={item.ticketTypeID}
+                                    // ticketTypeName={item.ticketTypeName}
+                                    // qtdAvailable={item.qtdAvailable}
+                                    // />
                                     
                                 )
                             })}

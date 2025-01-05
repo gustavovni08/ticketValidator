@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { IProductOrderSumary } from "../components/ProductUnitController";
 import { ICardObjectProps } from "../../../components/global/cardObject/CardObject";
+import { ITicketType } from "../CheckoutPage";
 
 interface Charge {
     user_id: number
@@ -31,8 +32,8 @@ interface ICheckOutContextProps {
 
     amount: number
     setAmount:(amount: number) => void
-    items: IProductOrderSumary[]
-    setItems: (items: IProductOrderSumary[]) => void
+    items: ITicketType[]
+    setItems: (items:ITicketType[]) => void
     object: ICardObjectProps | null
     setObject: (obj: ICardObjectProps | null) => void
     order: IOrderResponse | null
@@ -63,7 +64,7 @@ interface ICheckoutContextProviderProps {
 export function CheckOutContextProvider({children} : ICheckoutContextProviderProps){
     
     const [amount, setAmount] = useState<number>(0)
-    const [items, setItems] = useState<IProductOrderSumary[]>([])
+    const [items, setItems] = useState<ITicketType[]>([])
     const [object, setObject] = useState<ICardObjectProps | null>(null)
     const [order, setOrder] = useState<IOrderResponse | null>(null)
     

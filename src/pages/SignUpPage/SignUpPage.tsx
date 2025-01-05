@@ -28,7 +28,7 @@ export default  function GuardianSignUpPage(){
     const [emptyFields, setEmptyFields] = useState<string[]>([])
     const [step, setStep] = useState<number>(1)
 
-    const {setUser} = useContext(SignUpContext)
+    const {setUser, setToken} = useContext(SignUpContext)
 
     const navigate = useNavigate()
 
@@ -185,18 +185,20 @@ export default  function GuardianSignUpPage(){
                 document: CPF,
                 email: email,
                 // endereco: address,
-                nome: name,
+                name: name,
                 role:'CUSTOMER',
                 // numeroEndereco: addressNumber,
                 senha: password,
                 contato: telphone,
+                image_user_base64: 'img',
                 // UF: UF,
             }
 
             setUser(user)
-            navigate('/FacialUpload')
             const {data} = await api.post('/register', user)
             console.log(data)
+            setToken(data.access_token)
+            navigate('/FacialUpload')
 
             
         } catch (error) {
@@ -349,7 +351,7 @@ export default  function GuardianSignUpPage(){
                 {step === 2 && (
                     <>
                         <TextInput 
-                        label="Insira o CEP do Responsável" 
+                        label="Insira o CEP" 
                         required={true}
                         value={CEP} 
                         mask="99999-999"
@@ -358,8 +360,8 @@ export default  function GuardianSignUpPage(){
                         onChange={(event) => {setCEP(event.target.value)}}/>
 
                         <TextInput 
-                        label="Insira o Endereço do Responsável"
-                        placeholder="Endereço do Responsável" 
+                        label="Insira o Endereço"
+                        placeholder="Insira o Endereço" 
                         required={true}
                         value={address} 
                         readonly={readonly}
@@ -367,8 +369,8 @@ export default  function GuardianSignUpPage(){
                         onChange={(event) => {setAddress(event.target.value)}}/>
 
                         <TextInput 
-                        label="Insira a UF do Endereço do Responsável" 
-                        placeholder="UF do Endereço do Responsável"
+                        label="Insira a UF do Endereço" 
+                        placeholder="Insira a UF"
                         required={true}
                         value={UF} 
                         readonly={readonly}
@@ -377,8 +379,8 @@ export default  function GuardianSignUpPage(){
 
 
                         <TextInput 
-                        label="Insira a Cidade do Endereço do Responsável" 
-                        placeholder="Endereço do Responsável"
+                        label="Insira a Cidade do Endereço" 
+                        placeholder="Insira a cidade"
                         readonly={readonly}
                         required={true}
                         value={city} 
@@ -386,16 +388,16 @@ export default  function GuardianSignUpPage(){
                         onChange={(event) => {setCity(event.target.value)}}/>
 
                         <TextInput
-                        placeholder="Endereço do Responsável" 
-                        label="Insira o número de Endereço do Responsável" 
+                        placeholder="Número do Endereço" 
+                        label="Insira o número de Endereço" 
                         required={true}
                         value={addressNumber} 
                         isError={emptyFields.includes("addressNumber")}
                         onChange={(event) => {setAddressNumber(event.target.value)}}/>
 
                         <TextInput 
-                        label="Insira um Complemento de Endereço do Responsável"
-                        placeholder="Complemento de Endereço do Responsável"
+                        label="Insira um Complemento de Endereço"
+                        placeholder="Complemento de Endereço"
                         value={complement} 
                         onChange={(event) => {setComplement(event.target.value)}}/>
 

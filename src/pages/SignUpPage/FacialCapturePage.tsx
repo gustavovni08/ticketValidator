@@ -54,6 +54,14 @@ export default function FacialCapturePage() {
         }
     }
 
+    const stopCamera = () => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+    };
+
     function setData(){
 
         if(capturedImage){
@@ -61,6 +69,7 @@ export default function FacialCapturePage() {
             setUserPhotoBase64(capturedImage)
             console.log(capturedImage)
             navigate('/')
+            stopCamera()
 
         }
 

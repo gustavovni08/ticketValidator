@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { SignUpContext } from "../../../contexts/SignInContext"
 import { IoLogOut } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -15,8 +15,8 @@ export default function Header(){
     const {setActiveButton} = useActiveButton()
     const {user, setUser} = useContext(SignUpContext)
     const [showMenu, setShowMenu] = useState(false)
-
-    const routes : IMenuNavBarProps[] = [
+    
+    const routeList : IMenuNavBarProps[] = [
         {
             title: 'Início',
             path: '/',            
@@ -42,10 +42,24 @@ export default function Header(){
             path: '/',            
         },
         {
-            title: 'Validar Ingresso',
-            path: '/',            
+            title: !user ? 'Entrar' : 'Sair',
+            path: !user ? '/SignIn' : '/',            
         },
+        
     ]
+    const [routes, setRoutes] = useState(routeList)
+
+    console.log(user)
+    
+    useEffect(() => {
+        if(user?.role === 'ADMIN' && !routes[routes.length - 1].title.includes('Validar Ingresso')){
+            routes.push({
+                title: 'Validar Ingresso',
+                path: '/ValidateTicket',            
+            },)
+        }
+    }, [user])
+    
 
     return(
         <>
@@ -62,7 +76,7 @@ export default function Header(){
                         <FaRegUserCircle/>
                     </div>
                     <div className="text-black text-sm">
-                        {user.nome}
+                        {user.name}
                     </div>
                 </div>
             )}

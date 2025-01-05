@@ -2,12 +2,13 @@ import React, { createContext, useState } from "react";
 
 export interface IUser {
     id: number
-    nome: string
+    name: string
     document: string
     senha: string
     email: string
     contato: string
     role: string
+    image_user_base64?: string
     // CEP: string
     // UF: string
     // cidade: string

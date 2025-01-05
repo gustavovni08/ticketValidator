@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react"
-import { CheckoutContext } from "./context/CheckoutContext"
+import { CheckoutContext, IOrderResponse } from "./context/CheckoutContext"
 import { formatAmount } from "./components/SubtotalFooter"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -9,25 +9,29 @@ import { FaArrowLeft } from "react-icons/fa6"
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton"
 import { useActiveButton } from "../../components/global/footer/context/ActiveButtonContext"
 import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu"
+import { exequery, IExequery } from "../../services/api"
+import { SignUpContext } from "../../contexts/SignInContext"
 
 export default function PaymentPage(){
 
-    const {amount, items, object, order} = useContext(CheckoutContext)
+    const {token} = useContext(SignUpContext)
+    const {amount, items, object, order, setItems} = useContext(CheckoutContext)
     const [qrCodeUrl, setQrCodeUrl] = useState('')
     const [timeLeft, setTimeLeft] = useState<number>(300)
     const [getTimer, setGetTimer] = useState(5)
-    const [status, setStatus] = useState()
+    const [status, setStatus] = useState<number>()
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const navigate = useNavigate()
     const {setActiveButton} = useActiveButton()
-    console.log(object)
-    console.log(order)
+    // console.log(object)
+    // console.log(order)
 
     const buttons : IFloatingButtonProps[] = [
         {
             icon: <FaArrowLeft/>,
             label:'',
             onClick: () =>{
+                setItems([])
                 navigate(-1)
             },
             row: true,
@@ -36,8 +40,15 @@ export default function PaymentPage(){
 
     const getOrderData = useCallback(async () => {
         try {
-          const {data} = await axios.get(`https://api-totem.pacsafe.com.br/api/checkout/${order?.charge.id}`)
-          setStatus(data.order.status)
+            const query : IExequery = {
+                isPublic: false,
+                method: 'get',
+                route:`/charge/${order?.charge.id}`,
+                token: token,
+            }
+          const data = await exequery(query)
+          setStatus(data.status)
+          console.log("🚀 ~ getOrderData ~ data.status:", data.status)
         } catch (error) {
           console.error(error)
         }
@@ -76,7 +87,8 @@ export default function PaymentPage(){
     }, [getTimer, getOrderData]);
 
     useEffect(() => {
-        if(status === 'concluido'){
+        console.log(status)
+        if(status === 2){
             setShowConfirmModal(true)
         }
     }, [status, navigate])
@@ -93,6 +105,7 @@ export default function PaymentPage(){
         }
 
         if(timeLeft === 0){
+            setItems([])
             navigate(-1)
         }
     }, [timeLeft])
@@ -114,11 +127,13 @@ export default function PaymentPage(){
             onConfirm={() => {
                 
                 if(object?.type === 'sorteio'){
+                    setItems([])
                     navigate('/Raffles')
                     return
                 }
 
                 if(object?.type === 'evento') {
+                    setItems([])
                     navigate('/Tickets')
                     return
                 }

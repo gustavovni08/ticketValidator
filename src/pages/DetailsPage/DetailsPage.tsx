@@ -14,6 +14,12 @@ import { SignUpContext } from "../../contexts/SignInContext"
 import TicketModal from "../../components/modal/ticketModal/TicketModal"
 import { ICardObjectProps } from "../../components/global/cardObject/CardObject"
 import RaffleModal from "../../components/modal/raffleModal/RaffleModal"
+import { exequery, IExequery } from "../../services/api"
+import { ITicketResponse } from "../ListTickets/ListTickets"
+import ConfirmModal, { IConfirmModalProps } from "../../components/modal/ConfirmModal/ConfirmModal"
+import { IEventResponse } from "../CheckoutPage/CheckoutPage"
+import { log } from "node:console"
+import LoadingElement from "../../components/global/LoadingElement/LoadingElement"
 
 export interface IDetailsPageProps {
     id: number
@@ -35,7 +41,11 @@ export default function DetailsPage(){
     const { id, type, title, description, image, date, location: loc, time, price, qrcode, result } = state;
     const [showTicketModal, setShowTicketModal] = useState<boolean>(false)
     const [showRaffleModal, setShowRaffleModal] = useState<boolean>(false)
-    const {user} = useContext(SignUpContext)
+    const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false)
+    const [confirmModalProps, setConfirmModalProps] = useState<IConfirmModalProps>({closeModal: () => {}, isOpen: false, title: '', type:'confirm', auxFunction: () => {}, message:'', onConfirm: () => {}, textButton: ''})
+    const [tickets, setTickets] = useState([])
+    const {user, token} = useContext(SignUpContext)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
     function typeFunctionController(){
@@ -44,7 +54,10 @@ export default function DetailsPage(){
                 navigate('/signIn')
                 return
             }
-            navigate(`/Checkout/${1}/${type}/${id}`)
+
+            const validation = validateTicket()
+            console.log(validation)
+            if(!validation) navigate(`/Checkout/${1}/${type}/${id}`);
         }
         if(type === 'sorteio'){
             if(!user){
@@ -61,6 +74,57 @@ export default function DetailsPage(){
         }
     }
 
+    async function getTickets(){
+        if(type === 'evento'){
+            try {
+                
+                const query : IExequery = {
+                    isPublic: false,
+                    method: 'get',
+                    route: '/tickets',
+                    token: token,
+                }
+
+                const data = await exequery(query)
+                console.log(data)
+                return data                
+            } catch (error) {
+                throw error
+            }
+        }
+        return
+    }
+
+    function validateTicket() {
+        const hasTicket = tickets.some((item: ITicketResponse) => {
+            console.log('oi');
+            return item.event.id === parseInt(id);
+        });
+    
+        console.log(hasTicket);
+    
+        if (hasTicket) {
+            const modal: IConfirmModalProps = {
+                closeModal: () => setShowConfirmModal(false),
+                isOpen: showConfirmModal,
+                title: 'Ingresso já obtido',
+                type: 'confirm',
+                onConfirm: () => {
+                    setShowConfirmModal(false);
+                    navigate('/Tickets');
+                },
+                message: 'Ingresso para esse Evento já foi obtido.',
+                textButton: 'Ver Ingressos',
+            };
+    
+            setConfirmModalProps(modal);
+            setShowConfirmModal(true);
+            return hasTicket;
+        }
+
+        return hasTicket;
+    }
+
     const buttons : IFloatingButtonProps[] = [
         {
             icon: <FaArrowLeft/>,
@@ -71,8 +135,36 @@ export default function DetailsPage(){
         },
     ] 
 
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            if(user && token){  
+                setIsLoading(true)              
+                const tickets = await getTickets()
+                setTickets(tickets)
+                setIsLoading(false)
+            }
+        
+        }
+
+        fetchData()
+
+    }, [])
+
     return( 
         <>
+            <ConfirmModal 
+            isOpen={showConfirmModal}
+            closeModal={confirmModalProps.closeModal}
+            title={confirmModalProps.title}
+            type={confirmModalProps.type}
+            auxFunction={confirmModalProps.auxFunction}
+            message={confirmModalProps.message}
+            onConfirm={confirmModalProps.onConfirm}
+            textButton={confirmModalProps.textButton}
+            />
+            
             <TicketModal 
             isOpen={showTicketModal} 
             closeModal={() => {setShowTicketModal(false)}}
@@ -91,7 +183,7 @@ export default function DetailsPage(){
             description={description}
             />
             <PageContainer>
-
+            <LoadingElement isLoading={isLoading}>
             <FloatingMenu items={buttons}/>
                 <div className="min-h-[100vh] w-full pb-[30%] justify-center items-center">
                     <div className="flex flex-col w-full max-h-[100%] p-4 mt-10 space-y-4 bg-white border shadow-lg rounded-md">
@@ -246,6 +338,8 @@ export default function DetailsPage(){
                 </div>
 
                 </div>
+            </LoadingElement>
+
             </PageContainer>
         </>
     )

@@ -17,92 +17,92 @@ export default function ProductUnitController({eventID, price, qtdAvailable, tic
     const [unitCounter, setUnitCounter] = useState<number>(0)
     const {amount, setAmount, items, setItems} = useContext(CheckoutContext)
 
-    function handleAddUnit(){
-        if(unitCounter < qtdAvailable){
+    // function handleAddUnit(){
+    //     if(unitCounter < qtdAvailable){
             
-            setUnitCounter((prev) => prev + 1)
-            const newAmount = parseFloat((amount + price).toFixed(2))
-            setAmount(newAmount)
+    //         setUnitCounter((prev) => prev + 1)
+    //         const newAmount = parseFloat((amount + price).toFixed(2))
+    //         setAmount(newAmount)
 
-            const updatedItems = [...items]
-            console.log('lista inicial')
-            console.log(items)
-            const item : IProductOrderSumary = {
-                id: ticketTypeID,
-                title: ticketTypeName,
-                price: price
-            }
-            updatedItems.push(item)
-            console.log('items adicionados')
-            console.log(updatedItems)
-            setItems(updatedItems)
+    //         const updatedItems = [...items]
+    //         console.log('lista inicial')
+    //         console.log(items)
+    //         const item : IProductOrderSumary = {
+    //             id: ticketTypeID,
+    //             title: ticketTypeName,
+    //             price: price
+    //         }
+    //         updatedItems.push(item)
+    //         console.log('items adicionados')
+    //         console.log(updatedItems)
+    //         // setItems(updatedItems)
 
-            return
-        }
+    //         return
+    //     }
 
-        window.alert('Quantidade excede o estoque.')
-    }
+    //     window.alert('Quantidade excede o estoque.')
+    // }
 
-    function handleClearProduct(){
+    // function handleClearProduct(){
 
-        if(unitCounter > 0){
+    //     if(unitCounter > 0){
             
-            setUnitCounter(0)
+    //         setUnitCounter(0)
             
-            console.log(items)
-            const updatedItems = [...items]
+    //         console.log(items)
+    //         const updatedItems = [...items]
             
-            let cutAmount : number = 0
-            updatedItems.forEach((item) => {
+    //         let cutAmount : number = 0
+    //         updatedItems.forEach((item) => {
 
-                if(item.id === ticketTypeID) parseFloat((cutAmount += item.price).toFixed(2))
+    //             if(item.id === ticketTypeID) parseFloat((cutAmount += item.price).toFixed(2))
             
-            })
+    //         })
         
-            console.log(cutAmount)
-            const newAmount = amount - cutAmount
-            setAmount(newAmount)
+    //         console.log(cutAmount)
+    //         const newAmount = amount - cutAmount
+    //         setAmount(newAmount)
 
-            const filtredList = updatedItems.filter((item) => {
-                return(
-                    item.id !== ticketTypeID
-                )
-            })
+    //         const filtredList = updatedItems.filter((item) => {
+    //             return(
+    //                 item.id !== ticketTypeID
+    //             )
+    //         })
 
-            console.log(filtredList)
-            setItems(filtredList)
-        }
+    //         console.log(filtredList)
+    //         setItems(filtredList)
+    //     }
 
-    }
+    // }
 
-    function handleRemoveUnit() {
-        if (unitCounter > 0) {
-            let itemRemoved = false
+    // function handleRemoveUnit() {
+    //     if (unitCounter > 0) {
+    //         let itemRemoved = false
             
-            console.log('lista inicial')
-            console.log(items)
-            const updatedItems = items.filter((item) => {
-                if (!itemRemoved && item.id === ticketTypeID) {
-                    itemRemoved = true
-                    return false
-                }
-                return true
-            });
+    //         console.log('lista inicial')
+    //         console.log(items)
+    //         const updatedItems = items.filter((item) => {
+    //             if (!itemRemoved && item.id === ticketTypeID) {
+    //                 itemRemoved = true
+    //                 return false
+    //             }
+    //             return true
+    //         });
     
-            if (itemRemoved) {
-                setUnitCounter((prev) => prev - 1)
+    //         if (itemRemoved) {
+    //             setUnitCounter((prev) => prev - 1)
             
-                const newAmount = parseFloat((amount - price).toFixed(2))
-                setAmount(newAmount)
+    //             const newAmount = parseFloat((amount - price).toFixed(2))
+    //             setAmount(newAmount)
             
-                console.log('items removidos')
-                console.log(updatedItems)
-                setItems(updatedItems)
-            }
+    //             console.log('items removidos')
+    //             console.log(updatedItems)
+    //             setItems(updatedItems)
+    //         }
     
-            return
-        }
-    }
+    //         return
+    //     }
+    // }
 
     return(
         <div className="flex flex-col p-4 w-full space-y-4">
@@ -113,13 +113,13 @@ export default function ProductUnitController({eventID, price, qtdAvailable, tic
                 <div>{ticketTypeName}</div>
                 <div className="flex items-center space-x-4 text-lg">
                     <div
-                    onClick={handleClearProduct}
+                    // onClick={handleClearProduct}
                     className={` ${unitCounter > 0 ? 'text-black hover:scale-105 rounded-full cursor-pointer' :  'text-gray-400 cursor-not-allowed'} flex items-center justify-center`}
                     >
                         <FaRegTrashAlt/>
                     </div>
                     <div 
-                    onClick={handleRemoveUnit}
+                    // onClick={handleRemoveUnit}
                     className="hover:scale-105 hover:shadow-md rounded-full flex items-center justify-center cursor-pointer">
                         <IoIosRemove />
                     </div>
@@ -127,7 +127,7 @@ export default function ProductUnitController({eventID, price, qtdAvailable, tic
                         {unitCounter}
                     </div>
                     <div 
-                    onClick={handleAddUnit}
+                    // onClick={handleAddUnit}
                     className="hover:scale-105 hover:shadow-md rounded-full flex items-center justify-center cursor-pointer">
                         <IoIosAdd   />
                     </div>

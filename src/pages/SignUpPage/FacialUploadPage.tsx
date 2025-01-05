@@ -90,7 +90,7 @@ export default function FacialUploadPage(){
                 {!imageFile && (
                     <>
                         <Button value="Tirar Foto" onClick={facialCaptureRouter}/>
-                        <Button value="Escolher do Dispositivo" fontSize="text-md" onClick={handleChooseFile}/>    
+                        {/* <Button value="Escolher do Dispositivo" fontSize="text-md" onClick={handleChooseFile}/>     */}
                     </>
                 )}
                 

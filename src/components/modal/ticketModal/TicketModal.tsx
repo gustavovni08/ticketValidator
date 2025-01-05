@@ -6,7 +6,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaCalendar } from "react-icons/fa";
 import { IoTime } from "react-icons/io5";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SignUpContext } from "../../../contexts/SignInContext";
 
 
@@ -21,7 +21,18 @@ interface ITicketModal {
     location: string
 }
 export default function TicketModal({ closeModal, isOpen, id, ticketName, qrcode, date, time, location }: ITicketModal) {
+    
     const { user } = useContext(SignUpContext);
+    const [qrCodeUrl, setQrCodeUrl] = useState<string>('')
+
+    function getQrcode(){
+        const url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrcode)}`
+        setQrCodeUrl(url)
+    }
+
+    useEffect(() => {
+      getQrcode()
+    }, [])
   
     return (
       <ModalContainer isOpen={isOpen} closeModal={closeModal}>
@@ -38,7 +49,7 @@ export default function TicketModal({ closeModal, isOpen, id, ticketName, qrcode
 
             <div>
               <img
-                src={qrcode}
+                src={qrCodeUrl}
                 alt={`${ticketName}#${id}`}
                 className="rounded-md w-[150px] h-[150px]"
               />
@@ -47,8 +58,8 @@ export default function TicketModal({ closeModal, isOpen, id, ticketName, qrcode
             {[
               { icon: <FaTicket />, label: "Número do Ingresso:", value: `#${id}` },
               { icon: <FaTicket />, label: "Nome do Ingresso:", value: ticketName },
-              { icon: <FaRegUserCircle />, label: "Dono do Ingresso:", value: user?.nome || "N/A" },
-              { icon: <FaRegUserCircle />, label: "Código do Usuário:", value: "#0001" },
+              { icon: <FaRegUserCircle />, label: "Dono do Ingresso:", value: user?.name || "N/A" },
+              { icon: <FaRegUserCircle />, label: "Código do Usuário:", value: `#UCD5F${user?.id}` },
               { icon: <FaLocationDot />, label: "Local do Evento:", value: location },
               { icon: <FaCalendar />, label: "Data do Evento:", value: date },
               { icon: <IoTime />, label: "Hora do Evento:", value: time },
