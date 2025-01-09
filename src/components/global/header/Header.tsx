@@ -52,7 +52,7 @@ export default function Header(){
     console.log(user)
     
     useEffect(() => {
-        if(user?.role === 'ADMIN' && !routes[routes.length - 1].title.includes('Validar Ingresso')){
+        if(user?.role.includes('ADMIN') && !routes[routes.length - 1].title.includes('Validar Ingresso')){
             routes.push({
                 title: 'Validar Ingresso',
                 path: '/ValidateTicket',            

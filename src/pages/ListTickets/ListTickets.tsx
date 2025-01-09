@@ -111,7 +111,7 @@ export default function ListTickets(){
                 <FloatingMenu items={buttons}/>
                 <DynamicList
                 label="Meus Ingressos"
-                list={tickets}/>
+                list={tickets.slice().reverse()}/>
             </LoadingElement>
         </PageContainer>
     )

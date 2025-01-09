@@ -45,6 +45,25 @@ export default function DynamicList({
                     ))}
                 </div>
             )}
+
+            {list && list.length === 0 && (
+                <div className={`w-full flex-row overflow-x-scroll  scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent overflow-hidden flex space-x-4 items-center p-4`}>
+                                <CardObject
+                                id={'1'}
+                                image={'https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-erro-404_114360-2515.jpg?t=st=1736103570~exp=1736107170~hmac=f1a17342a2fc19b6654a8b3752f1fbbd14fba64552cf58cca11fcc412d8ce2d8&w=826'}
+                                title={'Items não encontrados'}
+                                location={''}
+                                date={''}
+                                description={''}
+                                type={'none'}
+                                time={''}
+                                price={''}
+                                qrcode={''}
+                                result={''}
+                            />
+                        
+                </div>
+            )}
             
             {secondaryLabel && (
                 <div className="w-[90%] text-white m-2 my-4 font-semibold text-lg">
@@ -74,6 +93,25 @@ export default function DynamicList({
                     ))}
                 </div>
             )}
+            
+            {secondaryList && secondaryList.length === 0 && (
+                <div className={`w-full flex-row overflow-x-scroll  scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent overflow-hidden flex space-x-4 items-center p-4`}>
+                                <CardObject
+                                id={'1'}
+                                image={'https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-erro-404_114360-2515.jpg?t=st=1736103570~exp=1736107170~hmac=f1a17342a2fc19b6654a8b3752f1fbbd14fba64552cf58cca11fcc412d8ce2d8&w=826'}
+                                title={'Items não encontrados'}
+                                location={''}
+                                date={''}
+                                description={''}
+                                type={'none'}
+                                time={''}
+                                price={''}
+                                qrcode={''}
+                                result={''}
+                            />
+                        
+                </div>
+            )}
         </div>
-    );
+    )
 }

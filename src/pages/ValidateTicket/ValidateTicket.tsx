@@ -71,15 +71,75 @@ export default function ValidateTicket(){
 
                 if (code && code.data) {
                     stopCamera()
-                    
+
+                    if(code.data.includes('TICKET')){
+                        const body = {
+                            ticket_number:code.data
+                        }
+                        
+                        const query : IExequery = {
+                            isPublic: false,
+                            method:'post',
+                            route:'/validate-ticket',
+                            token:token,
+                            body:body,
+                        }
+    
+                        try{
+                            const data = await exequery(query)
+                            if(data.message === 'Ingresso marcado como utilizado com sucesso!'){
+                                const modalProps : IConfirmModalProps = {
+                                    closeModal: () => {setShowModal(false)},
+                                    isOpen: true,
+                                    title: 'ingresso Validado!',
+                                    type: 'confirm',
+                                    message: `Ingresso Validado com sucesso!`,
+                                    onConfirm: () => {
+                                        setShowModal(false)
+                                        startCamera()
+                                    },
+                                    auxFunction:() => {
+                                        setShowModal(false)
+                                        startCamera()
+                                    }
+                                }
+                                setModalProps({...modalProps})
+                                setShowModal(true)
+                                console.log(data)
+                                return
+                            }
+                        }catch(error){
+                            const modalProps : IConfirmModalProps = {
+                                closeModal: () => {setShowModal(false)},
+                                isOpen: true,
+                                title: 'Ingresso Inválido',
+                                type: 'error',
+                                message: `Ingresso Inválido.`,
+                                onConfirm: () => {
+                                    setShowModal(false)
+                                    startCamera()
+                                },
+                                auxFunction:() => {
+                                    setShowModal(false)
+                                    startCamera()
+                                }
+                            }
+                            setModalProps({...modalProps})
+                            setShowModal(true)
+    
+                        } finally {
+                            return
+                        }
+                    }
+
                     const body = {
-                        ticket_number:code.data
+                        unique_number:code.data.split('/')[code.data.split('/').length - 1]
                     }
                     
                     const query : IExequery = {
                         isPublic: false,
                         method:'post',
-                        route:'/validate-ticket',
+                        route:'/validate-entry-ticket',
                         token:token,
                         body:body,
                     }
@@ -126,7 +186,11 @@ export default function ValidateTicket(){
                         setModalProps({...modalProps})
                         setShowModal(true)
 
+                    } finally {
+                        return
                     }
+                    
+
 
                 }
             }

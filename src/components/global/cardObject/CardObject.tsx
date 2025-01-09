@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export interface ICardObjectProps {
     id: string
-    type: 'evento' | 'sorteio' | 'bilhete' | 'ingresso'
+    type: 'evento' | 'sorteio' | 'bilhete' | 'ingresso' | 'none'
     description: string
     image: string
     title: string
@@ -41,6 +41,10 @@ export default function CardObject({
     const navigate = useNavigate()
 
     function handleNavigateDetails(){
+
+        if(type === 'none'){
+            return
+        }
 
         const detailObject : ICardObjectProps = {
             id: id,

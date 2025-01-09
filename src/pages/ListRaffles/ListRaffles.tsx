@@ -64,7 +64,7 @@ export default function ListRaffles(){
             <FloatingMenu items={buttons}/>
             <DynamicList
             label="Meus Bilhetes"
-            list={raffles}/>
+            list={raffles.slice().reverse()}/>
         </PageContainer>
     )
 }
