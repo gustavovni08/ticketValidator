@@ -125,7 +125,7 @@ export default function ValidateTicket(){
                     try{
 
                         const body = {
-                            unique_number:code.data.split('/')[code.data.split('/').length - 1],
+                            unique_number:code.data,
     
                         }
 
