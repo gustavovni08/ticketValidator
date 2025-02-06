@@ -1,5 +1,4 @@
 import { FaArrowLeft } from "react-icons/fa6";
-import FloatingMenu from "../../components/global/floatingMenu/FloatingMenu";
 import { IFloatingButtonProps } from "../../components/global/floatingMenu/components/FloatingButton";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -7,7 +6,6 @@ import jsQR from "jsqr";
 import { exequery, IExequery } from "../../services/api";
 import { SignUpContext } from "../../contexts/SignInContext";
 import ConfirmModal, { IConfirmModalProps } from "../../components/modal/ConfirmModal/ConfirmModal";
-import { IModalContainerProps } from "../../components/modal/modalContainer/ModalContainer";
 
 export default function ValidateTicket(){
 
@@ -15,20 +13,8 @@ export default function ValidateTicket(){
     const videoRef = useRef<HTMLVideoElement | null>(null)
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [showModal, setShowModal] = useState<boolean>(false)
-    const [modalProps, setModalProps] = useState<IConfirmModalProps>({closeModal: () => {}, isOpen: false, title: '', type:'confirm', auxFunction: () => {}, message:'', onConfirm: () => {}, textButton: ''})
+    const [modalProps, setModalProps] = useState<IConfirmModalProps>({closeModal: () => {}, isOpen: false, title: '', type:'confirm', auxFunction: () => {}, message:'', onConfirm: () => {}, textButton: '', closeButton: false, autoClose: false, closeTime: 0})
     const {token} = useContext(SignUpContext)
-
-    const buttons : IFloatingButtonProps[] = [
-        {
-            icon: <FaArrowLeft/>,
-            label:'',
-            onClick: () => {
-                stopCamera()
-                navigate('/')
-            },
-            row: true,
-        },
-    ] 
 
     const startCamera = async () => {
         try {
@@ -101,7 +87,9 @@ export default function ValidateTicket(){
                                     auxFunction:() => {
                                         setShowModal(false)
                                         startCamera()
-                                    }
+                                    },               
+                                    autoClose: true,
+                                    closeTime: 1000,
                                 }
                                 setModalProps({...modalProps})
                                 setShowModal(true)
@@ -114,7 +102,7 @@ export default function ValidateTicket(){
                                 isOpen: true,
                                 title: 'Ingresso Inválido',
                                 type: 'error',
-                                message: `Ingresso Inválido.`,
+                                message: `${error}`,
                                 onConfirm: () => {
                                     setShowModal(false)
                                     startCamera()
@@ -122,7 +110,9 @@ export default function ValidateTicket(){
                                 auxFunction:() => {
                                     setShowModal(false)
                                     startCamera()
-                                }
+                                },
+                                autoClose: true,
+                                closeTime: 1000,
                             }
                             setModalProps({...modalProps})
                             setShowModal(true)
@@ -131,49 +121,22 @@ export default function ValidateTicket(){
                             return
                         }
                     }
-
-                    const body = {
-                        unique_number:code.data.split('/')[code.data.split('/').length - 1]
-                    }
                     
-                    const query : IExequery = {
-                        isPublic: false,
-                        method:'post',
-                        route:'/validate-entry-ticket',
-                        token:token,
-                        body:body,
-                    }
-
                     try{
-                        const data = await exequery(query)
-                        if(data.message === 'Ingresso marcado como utilizado com sucesso!'){
-                            const modalProps : IConfirmModalProps = {
-                                closeModal: () => {setShowModal(false)},
-                                isOpen: true,
-                                title: 'ingresso Validado!',
-                                type: 'confirm',
-                                message: `Ingresso Validado com sucesso!`,
-                                onConfirm: () => {
-                                    setShowModal(false)
-                                    startCamera()
-                                },
-                                auxFunction:() => {
-                                    setShowModal(false)
-                                    startCamera()
-                                }
-                            }
-                            setModalProps({...modalProps})
-                            setShowModal(true)
-                            console.log(data)
-                            return
+
+                        const body = {
+                            unique_number:code.data.split('/')[code.data.split('/').length - 1],
+    
                         }
-                    }catch(error){
+
+                        await validateTicket(body.unique_number)
+                    }catch(error: any){
                         const modalProps : IConfirmModalProps = {
                             closeModal: () => {setShowModal(false)},
                             isOpen: true,
                             title: 'Ingresso Inválido',
                             type: 'error',
-                            message: `Ingresso Inválido.`,
+                            message:  `${error.message}`,
                             onConfirm: () => {
                                 setShowModal(false)
                                 startCamera()
@@ -181,7 +144,9 @@ export default function ValidateTicket(){
                             auxFunction:() => {
                                 setShowModal(false)
                                 startCamera()
-                            }
+                            },
+                            autoClose: true,
+                            closeTime: 1000,
                         }
                         setModalProps({...modalProps})
                         setShowModal(true)
@@ -197,21 +162,68 @@ export default function ValidateTicket(){
         }
     };
 
-    useEffect(() => {
-        if(!token){
-            navigate('/')
-        }
-        startCamera();
-        const interval = setInterval(()=> {
-            scanQRCode()
-            console.log('oi')
-        }, 1000)
+    const validateTicket = async (unique_number: string) => {
 
-        return () => {
-            clearInterval(interval)
-            stopCamera()
-        };
-    }, []);
+        const body = {
+            unique_number: unique_number
+        }
+
+        try {
+                const query : IExequery = {
+                    isPublic: true, 
+                    method: 'post', 
+                    route:'/validate-entry-ticket', 
+                    token: '', 
+                    body: body
+                }
+
+                const data = await exequery(query)
+
+                if(data.message === 'Ingresso marcado como utilizado com sucesso!'){
+                    const modalProps : IConfirmModalProps = {
+                        closeModal: () => {setShowModal(false)},
+                        isOpen: true,
+                        title: 'ingresso Validado',
+                        type: 'confirm',
+                        message: `Ingresso Validado com sucesso!`,
+                        onConfirm: () => {
+                            setShowModal(false)
+                            startCamera()
+                        },
+                        auxFunction:() => {
+                            setShowModal(false)
+                            startCamera()
+                        },
+                        autoClose: true,
+                        closeTime: 1000,
+                    }
+                    setModalProps({...modalProps})
+                    setShowModal(true)
+                    console.log(data)
+                    return
+                }
+        } catch (error) {   
+            throw error
+        }
+    }
+
+    useEffect(() => {
+        const startCameraAndScan = async () => {
+            await startCamera()
+            const interval = setInterval(() => {
+                scanQRCode()
+                console.log('oi')
+            }, 1000)
+    
+            return () => {
+                clearInterval(interval);
+                stopCamera()
+            }
+        }
+    
+        startCameraAndScan()
+    
+    }, [])
 
     return(
         <div className="flex flex-col min-h-[100vh] w-full">
@@ -227,24 +239,24 @@ export default function ValidateTicket(){
                 setShowModal(false)
                 startCamera()
             }}
-            onConfirm={() => {
-                setShowModal(false)
-                startCamera()
-            }} 
+            onConfirm={modalProps.onConfirm} 
             message={modalProps.message}
+            closeButton={modalProps.closeButton}
+            textButton={modalProps.textButton}
+            autoClose={modalProps.autoClose}
+            closeTime={modalProps.closeTime}
             />
             <div className="p-2 px-4 border-b font-[600] shadow-md">
                 Validar Ingresso
             </div>
             <div className="flex flex-col p-4">
-                <FloatingMenu items={buttons}/>
                 <div className="w-full flex justify-center items-center pt-10">
                     <div className="w-full relative rounded-md h-[50vh] lg:h-[70vh] flex justify-center items-center">
                     <video
                         ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
+                        autoPlay={true}
+                        playsInline={true}
+                        muted={true}
                         className="w-full h-full object-cover rounded-lg"
                     />
                     </div>

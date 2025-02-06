@@ -11,6 +11,7 @@ import FacialUploadPage from './pages/SignUpPage/FacialUploadPage';
 import FacialCapturePage from './pages/SignUpPage/FacialCapturePage';
 import CheckOutPage from './pages/CheckoutPage/CheckoutPage';
 import PaymentPage from './pages/CheckoutPage/PaymentPage';
+import SelectValidationOptions from './pages/ValidateTicket/SelectValidateOptions';
 import ValidateTicket from './pages/ValidateTicket/ValidateTicket';
 import { ActiveButtonProvider } from './components/global/footer/context/ActiveButtonContext';
 import { SignUpContextProvider } from './contexts/SignInContext';
@@ -23,19 +24,9 @@ export default function App() {
           <ActiveButtonProvider>
             <CheckOutContextProvider>
               <Router>
-                  <Routes>
-                      <Route path="/" element={<HomePage/>}/>
-                      <Route path="/Events" element={<ListEvents/>}/>
-                      <Route path="/Sweeptakes" element={<ListSweeptakes/>}/>
-                      <Route path="/Tickets" element={<ListTickets/>}/>
-                      <Route path="/Raffles" element={<ListRaffles/>}/>        
-                      <Route path="/Details" element={<DetailsPage/>}/>        
-                      <Route path="/SignIn" element={<SignInPage/>}/>        
-                      <Route path="/SignUp" element={<SignUpPage/>}/>        
-                      <Route path="/FacialUpload" element={<FacialUploadPage/>}/>        
-                      <Route path="/FacialCapture" element={<FacialCapturePage/>}/>        
-                      <Route path="/Checkout/:userID/:productType/:productID" element={<CheckOutPage />} />
-                      <Route path="/Payment" element={<PaymentPage/>}/>
+                  <Routes>   
+                      <Route path="/" element={<SignInPage/>}/>        
+                      <Route path="/Settings" element={<SelectValidationOptions/>}/>
                       <Route path="/ValidateTicket" element={<ValidateTicket/>}/>
                     </Routes>
               </Router>

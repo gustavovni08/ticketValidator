@@ -335,7 +335,7 @@ export default function DetailsPage(){
 
 
 
-                </div>
+                    </div>
 
                 </div>
             </LoadingElement>

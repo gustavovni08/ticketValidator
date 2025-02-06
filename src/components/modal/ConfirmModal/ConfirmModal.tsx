@@ -1,9 +1,8 @@
 import Button from "../../buttons/Button"
 import ModalContainer from "../modalContainer/ModalContainer"
 import { useEffect, useRef } from "react"
-const sucessAnimation = require('./assets/succesAnimation.webm')
-const errorAnimation = require('./assets/errorAnimation.webm')
-
+import { FaCheckCircle } from "react-icons/fa"
+import { MdError } from "react-icons/md";
 export interface IConfirmModalProps {
     isOpen: boolean
     closeModal:() => void
@@ -12,22 +11,30 @@ export interface IConfirmModalProps {
     message?: string
     textButton?: string
     onConfirm?: () => void
+    closeButton?: boolean
     auxFunction?: () => void
+    autoClose?: boolean
+    closeTime?: number
     
 }
 
 
-export default function ConfirmModal({isOpen, closeModal, title, type ,message, textButton, onConfirm, auxFunction} : IConfirmModalProps){
-
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+export default function ConfirmModal({isOpen, closeModal, title, type ,message, textButton, onConfirm, auxFunction, closeButton, autoClose, closeTime} : IConfirmModalProps){
 
     useEffect(() => {
-        if (isOpen && videoRef.current) {
-          videoRef.current.play().catch((err) => {
-            console.error("Erro ao reproduzir o vídeo:", err)
-          })
+        let intervalId: any;
+    
+        if (autoClose && isOpen) {
+            intervalId = setTimeout(() => {
+                if (onConfirm) onConfirm();
+                closeModal();
+            }, closeTime);
         }
-      }, [isOpen])
+    
+        return () => {
+            if (intervalId) clearTimeout(intervalId);
+        };
+    }, [isOpen, autoClose, closeTime, onConfirm, closeModal]);
 
       console.log(type, closeModal, title, message, textButton, onConfirm)
 
@@ -45,23 +52,30 @@ export default function ConfirmModal({isOpen, closeModal, title, type ,message, 
                 <div className="flex items-center justify-center w-full border-b font-[600] text-lg p-1">
                     {title}
                 </div>
-                <div className="flex items-center justify-center">
-                    <video ref={videoRef} src={ type === 'confirm' ? sucessAnimation : errorAnimation} muted />
+                <div className="flex items-center justify-center m-4">
+                   {type === 'confirm' && (<FaCheckCircle fill="#4CAF50" size={90}/>)}
+                   {type === 'error' && (<MdError fill="#F44336" size={90}/>)}
                 </div>
                 <div className="flex items-center justify-center w-full">
                     <div className="font-[500] w-1/2 text-center text-sm">
                         {message}
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-center w-full p-4">
+                <div className="flex flex-col items-center justify-center w-full p-4 space-y-2">
                 <Button 
                     value={textButton || 'Fechar'} 
-                    onClick={() => {
+                    onClick={async () => {
                         if(onConfirm){
-                            onConfirm()
+                            await onConfirm()
                         }
+                    }}/>
+                {closeButton && (
+                    <Button 
+                    value={'Fechar'} 
+                    onClick={() => {
                         closeModal()
                     }}/>
+                )}
                 </div>
             </div>
         </ModalContainer>
